@@ -1,0 +1,520 @@
+﻿<Window
+    x:Class="ClipTree.Main"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
+    Title="ClipTree"
+    Width="398.908"
+    Height="268.496"
+    MinWidth="500"
+    MinHeight="420"
+    Activated="Window_OnActivated"
+    Closing="Window_OnClosing"
+    Deactivated="Window_OnDeactivated"
+    PreviewKeyDown="Window_OnPreviewKeyDown"
+    ResizeMode="CanResizeWithGrip"
+    SizeChanged="Window_SizeChanged"
+    StateChanged="Window_StateChanged"
+    Style="{DynamicResource BaseWindowStyle}"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Windows/ListView.xaml" />
+                <ResourceDictionary Source="Styles/Windows/Menus.xaml" />
+                <ResourceDictionary Source="Styles/Windows/ResizeGrip.xaml" />
+                <ResourceDictionary Source="Styles/Windows/ScrollViewer.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border Name="WindowBorder" Style="{DynamicResource BaseWindowBorderStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
+
+            <tb:TaskbarIcon
+                IconSource="/Images/Main.ico"
+                MenuActivation="RightClick"
+                ToolTipText="ClipTree"
+                TrayMouseDoubleClick="NotifyTrayIcon_TrayMouseDoubleClick"
+                Visibility="Visible">
+
+                <tb:TaskbarIcon.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="ContextMenu_About_Click" Header="_About..." />
+                        <Separator />
+                        <MenuItem
+                            x:Name="mnuShowCurrentClip"
+                            Click="ContextMenu_ShowCurrentClip_Click"
+                            Header="Show Current _Clip..." />
+                        <Separator />
+                        <MenuItem
+                            Click="ContextMenu_Show_Click"
+                            FontWeight="Bold"
+                            Header="_Show" />
+                        <Separator />
+                        <MenuItem Click="ContextMenu_Exit_Click" Header="E_xit" />
+                    </ContextMenu>
+                </tb:TaskbarIcon.ContextMenu>
+            </tb:TaskbarIcon>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Name="rdStatusBar" Height="30" />
+                </Grid.RowDefinitions>
+
+                <ListView
+                    x:Name="lstvHistory"
+                    Grid.Row="0"
+                    Margin="3,3,0,3"
+                    AllowDrop="True"
+                    Drop="History_Drop">
+
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem
+                                Name="mnuSave"
+                                Click="ContextMenu_Save_OnClick"
+                                Header="Sa_ve..." />
+                            <Separator />
+                            <MenuItem
+                                Name="mnuEditName"
+                                Click="ContextMenu_EditName_OnClick"
+                                Header="_Edit Name..." />
+                            <Separator />
+                            <MenuItem
+                                Name="mnuSetAsCurrent"
+                                Click="ContextMenu_SetAsCurrent_OnClick"
+                                Header="Set As _Current"
+                                InputGestureText="F1" />
+                            <MenuItem
+                                Name="mnuSetAsCurrentText"
+                                Click="ContextMenu_SetAsCurrentText_OnClick"
+                                Header="Set As C_urrent (Strip Formatting)"
+                                InputGestureText="F2" />
+                            <MenuItem
+                                Name="mnuSetAsOnTopRule"
+                                Click="ContextMenu_SetAsOnTopRule_OnClick"
+                                Header="Set As On _Top Rule"
+                                InputGestureText="F3" />
+                            <Separator />
+                            <MenuItem
+                                Name="mnuMergeAsText"
+                                Click="ContextMenu_MergeAsText_OnClick"
+                                Header="Mer_ge As Text" />
+                            <Separator />
+                            <MenuItem
+                                Name="mnuMoveUp"
+                                Click="ContextMenu_MoveUp_OnClick"
+                                Header="Move _Up"
+                                InputGestureText="Ctrl+Up">
+                                <MenuItem.Icon>
+                                    <Image Source="images/Menus/UP.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem
+                                Name="mnuMoveDown"
+                                Click="ContextMenu_MoveDown_OnClick"
+                                Header="Move _Down"
+                                InputGestureText="Ctrl+Down">
+                                <MenuItem.Icon>
+                                    <Image Source="images/Menus/DOWN.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator />
+                            <MenuItem
+                                Name="mnuLock"
+                                Click="ContextMenu_Lock_OnClick"
+                                Header="L_ock"
+                                InputGestureText="Ctrl+L" />
+                            <MenuItem
+                                Name="mnuUnlock"
+                                Click="ContextMenu_Unlock_OnClick"
+                                Header="Unloc_k"
+                                InputGestureText="Ctrl+U" />
+                            <Separator />
+                            <MenuItem
+                                Name="mnuRemove"
+                                Click="ContextMenu_Remove_OnClick"
+                                Header="_Remove"
+                                InputGestureText="Del">
+                                <MenuItem.Icon>
+                                    <Image Source="images/Menus/DELETE.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem
+                                Name="mnuRemoveAllCopiedFrom"
+                                Click="ContextMenu_RemoveAllCopiedFrom_OnClick"
+                                Header="Re_move All 'Copied From'" />
+                            <MenuItem
+                                Name="mnuRemoveAllType"
+                                Click="ContextMenu_RemoveAllType_OnClick"
+                                Header="Remove All 'T_ype'" />
+                            <Separator />
+                            <MenuItem
+                                Name="mnuSelectAll"
+                                Click="ContextMenu_SelectAll_OnClick"
+                                Header="Select _All"
+                                InputGestureText="Ctrl+A" />
+                            <MenuItem
+                                Name="mnuSelectNone"
+                                Click="ContextMenu_SelectNone_OnClick"
+                                Header="Select _None"
+                                InputGestureText="Ctrl+Z" />
+                            <Separator />
+                            <MenuItem
+                                Name="mnuInvertSelection"
+                                Click="ContextMenu_InvertSelection_OnClick"
+                                Header="Invert Se_lection" />
+                            <Separator />
+                            <MenuItem
+                                Name="mnuViewClip"
+                                Click="ContextMenu_ViewClip_OnClick"
+                                Header="View Cli_p..."
+                                InputGestureText="Enter" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+
+                    <ListView.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="ListViewItem">
+                            <EventSetter Event="MouseDoubleClick" Handler="History_MouseDoubleClick" />
+                            <Setter Property="Background" Value="{Binding BackgroundColor}" />
+                            <Setter Property="Foreground" Value="{Binding ForeColor}" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                        </Style>
+                    </ListView.Resources>
+
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn
+                                Width="100"
+                                DisplayMemberBinding="{Binding Name}"
+                                Header="Name:" />
+                            <GridViewColumn
+                                Width="200"
+                                DisplayMemberBinding="{Binding TextDisplay}"
+                                Header="Text:" />
+                            <GridViewColumn
+                                Width="100"
+                                DisplayMemberBinding="{Binding Type}"
+                                Header="Type:" />
+                            <GridViewColumn
+                                Width="100"
+                                DisplayMemberBinding="{Binding CopiedFrom}"
+                                Header="Copied From:" />
+                            <GridViewColumn
+                                Width="70"
+                                DisplayMemberBinding="{Binding Locked}"
+                                Header="Locked:" />
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding DateTime}"
+                                Header="Date/Time:" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="5,0,0,3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FlowDirection="LeftToRight"
+                    Orientation="Horizontal">
+
+                    <Button
+                        Name="bStartEngine"
+                        Click="StartPauseEngine_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Start Engine">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/PLAY.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Name="bPauseEngine"
+                        Click="StartPauseEngine_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Pause Engine">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/PAUSE.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bAlwaysOnTopOn"
+                        Click="AlwaysOnTopButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Always On Top">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/PLUS.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Name="bAlwaysOnTopOff"
+                        Click="AlwaysOnTopButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Always On Top">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/MINUS.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bClipboardOff"
+                        Click="DisableClipboardButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Disable Clipboard">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/CLIPBOARD_X.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Name="bClipboardOn"
+                        Click="DisableClipboardButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Enable Clipboard">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/CLIPBOARD.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bTotals"
+                        Click="TotalsButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Totals">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/TOTALS.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bSearch"
+                        Click="SearchButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Search (Ctrl+F)">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/SEARCH.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bCleanUp"
+                        Click="CleanUpButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="Clean Up (Ctrl+Del)">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/BIN.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Click="AboutButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
+                        ToolTip="About">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/QUESTION.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="5,0,0,3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FlowDirection="LeftToRight"
+                    Orientation="Horizontal">
+
+                    <Label
+                        Name="lblCapsLock"
+                        Content="Caps Lock"
+                        Style="{DynamicResource BaseWindowNavigationStatusLabel}" />
+                    <Label
+                        Name="lblNumLock"
+                        Content="Num Lock"
+                        Style="{DynamicResource BaseWindowNavigationStatusLabel}" />
+                    <Label
+                        Name="lblTotalItems"
+                        Content="Total Items:  0"
+                        Style="{DynamicResource BaseWindowNavigationStatusLabel}" />
+                </StackPanel>
+            </Grid>
+
+            <Label
+                Grid.Column="1"
+                Content="ClipTree"
+                MouseDoubleClick="Title_MouseDoubleClick"
+                MouseDown="Title_OnMouseDown"
+                Style="{DynamicResource BaseWindowNavigationTitleBar}">
+
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem
+                            Name="mnuDockToTheRight"
+                            Click="ContextMenu_DockToTheRight_OnClick"
+                            Header="Dock To The _Right" />
+                        <MenuItem
+                            Name="mnuDockToTheLeft"
+                            Click="ContextMenu_DockToTheLeft_OnClick"
+                            Header="Dock To The _Left" />
+                        <Separator />
+                        <MenuItem
+                            Name="mnuMinimize"
+                            Click="ContextMenu_Minimize_OnClick"
+                            Header="_Minimize" />
+                        <Separator />
+                        <MenuItem Click="ContextMenu_Exit_OnClick" Header="E_xit" />
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
+
+            <StackPanel
+                Grid.Column="1"
+                Margin="0,0,0,20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                FlowDirection="LeftToRight"
+                Orientation="Vertical">
+
+                <StackPanel
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    FlowDirection="LeftToRight"
+                    Orientation="Vertical">
+
+                    <Button
+                        Name="bNew"
+                        Click="NewButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationButton}"
+                        ToolTip="New (Ctrl+N)">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/NEW.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bOpen"
+                        Click="OpenButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationButton}"
+                        ToolTip="Open (Ctrl+O)">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/OPEN.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bSaveAs"
+                        Click="SaveAsButton_Click"
+                        Style="{DynamicResource BaseWindowNavigationButton}"
+                        ToolTip="Save As (Ctrl+S)">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/SAVE.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    FlowDirection="LeftToRight"
+                    Orientation="Vertical">
+
+                    <Button
+                        Name="bMoveUp"
+                        Click="ContextMenu_MoveUp_OnClick"
+                        Style="{DynamicResource BaseWindowNavigationButton}"
+                        ToolTip="Move Up (Ctrl+Up)">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/UP.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bMoveDown"
+                        Click="ContextMenu_MoveDown_OnClick"
+                        Style="{DynamicResource BaseWindowNavigationButton}"
+                        ToolTip="Move Down (Ctrl+Down)">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/DOWN.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Name="bRemove"
+                        Click="ContextMenu_Remove_OnClick"
+                        Style="{DynamicResource BaseWindowNavigationButton}"
+                        ToolTip="Remove (Del)">
+                        <StackPanel>
+                            <Image Source="Images/Buttons/DELETE.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <Button
+                    Click="OptionsButton_Click"
+                    Style="{DynamicResource BaseWindowNavigationButton}"
+                    ToolTip="Options">
+                    <StackPanel>
+                        <Image Source="Images/Buttons/OPTIONS.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Name="bLock"
+                    Click="LockButton_Click"
+                    Style="{DynamicResource BaseWindowNavigationButton}"
+                    ToolTip="Lock">
+                    <StackPanel>
+                        <Image Source="Images/Buttons/LOCK.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Name="bUnlock"
+                    Click="LockButton_Click"
+                    Style="{DynamicResource BaseWindowNavigationButton}"
+                    ToolTip="Unlock">
+                    <StackPanel>
+                        <Image Source="Images/Buttons/UNLOCK.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Name="bMinimize"
+                    Click="MinimizeButton_Click"
+                    Style="{DynamicResource BaseWindowNavigationButton}"
+                    ToolTip="Minimize">
+                    <StackPanel>
+                        <Image Source="Images/Buttons/MINIMIZE.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Click="ExitButton_Click"
+                    Style="{DynamicResource BaseWindowNavigationButton}"
+                    ToolTip="Exit">
+                    <StackPanel>
+                        <Image Source="Images/Buttons/CLOSE.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

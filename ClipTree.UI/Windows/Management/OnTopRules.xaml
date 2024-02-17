@@ -1,0 +1,156 @@
+﻿<Window
+    x:Class="ClipTree.Windows.Management.OnTopRules"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="On Top Rules"
+    Width="650"
+    Height="300"
+    Activated="Window_OnActivated"
+    Closing="Window_OnClosing"
+    Deactivated="Window_OnDeactivated"
+    PreviewKeyDown="Window_OnPreviewKeyDown"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    Style="{DynamicResource BaseWindowStyle}"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Styles/Windows/ListView.xaml" />
+                <ResourceDictionary Source="../../Styles/Windows/Button.xaml" />
+                <ResourceDictionary Source="../../Styles/Windows/ScrollViewer.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border Name="WindowBorder" Style="{DynamicResource BaseWindowBorderStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{DynamicResource BaseWindowContentsBorder}" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="150" />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Grid.Column="0"
+                    Margin="10,10,0,50"
+                    Style="{DynamicResource BaseWindowControlBorder}" />
+
+                <ListView
+                    Name="lstvRules"
+                    Grid.Column="0"
+                    Margin="10,10,0,50"
+                    SelectionMode="Single"
+                    TabIndex="0">
+
+                    <ListView.Resources>
+                        <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="IsHitTestVisible" Value="False" />
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                        </Style>
+                    </ListView.Resources>
+
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn
+                                Width="300"
+                                DisplayMemberBinding="{Binding CopiedFrom}"
+                                Header="Copied From:" />
+                            <GridViewColumn
+                                Width="100"
+                                DisplayMemberBinding="{Binding Enabled}"
+                                Header="Enabled:" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <StackPanel Grid.Column="1" Margin="10,10,10,50">
+                    <Button
+                        Height="25"
+                        Margin="0,0,0,5"
+                        Click="AddButton_Click"
+                        Content="_Add"
+                        TabIndex="1" />
+                    <Button
+                        Name="bRemove"
+                        Height="25"
+                        Margin="0,0,0,5"
+                        Click="RemoveButton_Click"
+                        Content="_Remove"
+                        TabIndex="2" />
+                    <Button
+                        Name="bEnable"
+                        Height="25"
+                        Margin="0,0,0,5"
+                        Click="EnableButton_Click"
+                        Content="_Enable"
+                        TabIndex="3" />
+                    <Button
+                        Name="bDisable"
+                        Height="25"
+                        Margin="0,0,0,5"
+                        Click="DisableButton_Click"
+                        Content="_Disable"
+                        TabIndex="4" />
+                    <Button
+                        Name="bClear"
+                        Height="25"
+                        Click="ClearButton_Click"
+                        Content="_Clear"
+                        TabIndex="5" />
+                </StackPanel>
+            </Grid>
+
+            <Button
+                Name="bUpdate"
+                Grid.Column="0"
+                Width="130"
+                Height="25"
+                Margin="0,0,10,11"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Click="UpdateButton_Click"
+                Content="_Update"
+                IsDefault="True"
+                TabIndex="6" />
+
+            <Label
+                Grid.Column="1"
+                Content="On Top Rules"
+                MouseDown="Title_OnMouseDown"
+                Style="{DynamicResource BaseWindowNavigationTitleBar}" />
+
+            <StackPanel
+                Grid.Column="1"
+                Margin="0,0,0,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                FlowDirection="LeftToRight"
+                Orientation="Vertical">
+
+                <Button
+                    Click="CloseButton_Click"
+                    IsCancel="True"
+                    Style="{DynamicResource BaseWindowNavigationButton}"
+                    ToolTip="Close">
+                    <StackPanel>
+                        <Image Source="../../Images/Buttons/CLOSE.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

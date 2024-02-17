@@ -1,0 +1,139 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  Base Window Styles  -->
+    <Style x:Key="BaseWindowStyle" TargetType="{x:Type Window}">
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <!--  Base Window Border Styles  -->
+    <Style x:Key="BaseWindowBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Background" Value="Gray" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+
+    <!--  Base Window Contents Border Styles  -->
+    <Style x:Key="BaseWindowContentsBorder" TargetType="{x:Type Border}">
+        <Setter Property="Margin" Value="3,3,0,3" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+
+    <!--  Base Window Contents Border Styles  -->
+    <Style
+        x:Key="BaseWindowContentsBorderFull"
+        BasedOn="{StaticResource BaseWindowContentsBorder}"
+        TargetType="{x:Type Border}">
+        <Setter Property="Margin" Value="3,3,3,3" />
+    </Style>
+
+    <!--  Base Window Control Border Styles  -->
+    <Style x:Key="BaseWindowControlBorder" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+
+    <!--  Base Window Navigation Title Bar Styles  -->
+    <Style x:Key="BaseWindowNavigationTitleBar" TargetType="{x:Type Label}">
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="Padding" Value="10,15,8,50" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Foreground" Value="White" />
+        <Style.Resources>
+            <Style TargetType="{x:Type ContentPresenter}">
+                <Setter Property="LayoutTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="90" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <!--  Base Window Navigation Button Styles  -->
+    <Style x:Key="BaseWindowNavigationButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Width" Value="19" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Margin" Value="0,5,0,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border
+                        Name="Border"
+                        Padding="1"
+                        Background="Transparent"
+                        CornerRadius="2">
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="DarkGray" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Base Window Navigation Status Button Styles  -->
+    <Style
+        x:Key="BaseWindowNavigationStatusButton"
+        BasedOn="{StaticResource BaseWindowNavigationButton}"
+        TargetType="{x:Type Button}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,0,5,0" />
+    </Style>
+
+    <!--  Base Window Navigation Button Image Styles  -->
+    <Style x:Key="BaseWindowNavigationButtonImage" TargetType="{x:Type Image}">
+        <Setter Property="Width" Value="18" />
+        <Setter Property="Height" Value="18" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.25" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  Base Window Navigation Status Label Styles  -->
+    <Style x:Key="BaseWindowNavigationStatusLabel" TargetType="{x:Type Label}">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Margin" Value="17,1,0,0" />
+    </Style>
+
+    <!--  Base Window Navigation Link Styles  -->
+    <Style x:Key="BaseWindowNavigationLink" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="DarkBlue" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="DarkRed" />
+                <Setter Property="TextDecorations" Value="Underline" />
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

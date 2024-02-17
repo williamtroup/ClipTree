@@ -1,0 +1,19 @@
+﻿<Window
+    x:Class="ClipTree.Splash"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Splash"
+    Width="400"
+    Height="200"
+    AllowsTransparency="True"
+    PreviewKeyDown="Window_OnPreviewKeyDown"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Grid>
+        <Image Source="Images/Splash.png" />
+    </Grid>
+</Window>
