@@ -11,7 +11,7 @@ ClipTree
 > <p align="center">v1.0.0</p>
 <br />
 
-![ClipTree](docs/images/main.png)
+<div style="text-align:center"><img src="docs/images/main.png" /></div>
 <br>
 <br>
 
