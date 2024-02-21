@@ -20,20 +20,12 @@ namespace ClipTree.Windows.Management
 {
     public partial class RowColors : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IXMLSettings m_settings;
         private readonly IClipboardHistory m_clipboardHistory;
         private readonly IClipboardHistoryItems m_clipboardHistoryItems;
         private readonly WindowPosition m_windowPosition;
 
-        #endregion
-
-        #region Private Variables
-
         private bool m_running = true;
-
-        #endregion 
 
         public RowColors(IXMLSettings settings, IClipboardHistory clipboardHistory, IClipboardHistoryItems clipboardHistoryItems)
         {
@@ -104,13 +96,7 @@ namespace ClipTree.Windows.Management
             return lstvColors.Items.Cast<RowColorListViewEntry>().Any(listViewItem => string.Equals(listViewItem.CopiedFrom, copiedFrom, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        #region Private Properties
-
         private bool Changed { get; set; }
-
-        #endregion
-
-        #region Private "Title Bar" Events
 
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -126,10 +112,6 @@ namespace ClipTree.Windows.Management
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -161,10 +143,6 @@ namespace ClipTree.Windows.Management
 
             m_settings.Write(Settings.RowColorsWindow.RowColorsOptions, nameof(Settings.RowColorsWindow.ShowColorsAsTheyWouldAppear), chkShowColorsAsTheyWouldAppear.IsReallyChecked().ToNumericString());
         }
-
-        #endregion
-
-        #region Private "Editing" Events
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
@@ -231,10 +209,6 @@ namespace ClipTree.Windows.Management
             }
         }
 
-        #endregion
-
-        #region Private "Updating" Events
-
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             if (Changed)
@@ -260,10 +234,6 @@ namespace ClipTree.Windows.Management
 
             Close();
         }
-
-        #endregion
-
-        #region Private "Update Window Thread" Helpers
 
         private void SetupWindowUpdateThread()
         {
@@ -300,7 +270,5 @@ namespace ClipTree.Windows.Management
                 Opacity = 1.0;
             }
         }
-
-        #endregion
     }
 }

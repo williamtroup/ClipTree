@@ -65,8 +65,6 @@ namespace ClipTree
             Close();
         }
 
-        #region Private "Window" Events
-
         private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (KeyStroke.IsAltKey(Key.Space))
@@ -74,7 +72,5 @@ namespace ClipTree
                 e.Handled = true;
             }
         }
-
-        #endregion
     }
 }

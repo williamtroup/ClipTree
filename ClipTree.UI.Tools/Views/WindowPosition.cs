@@ -8,15 +8,11 @@ namespace ClipTree.UI.Tools.Views
 {
     public class WindowPosition
     {
-        #region Private Read-Only Variables
-
         private readonly Window m_window;
         private readonly IXMLSettings m_settings;
         private readonly double m_defaultWidth;
         private readonly double m_defaultHeight;
         private readonly string m_sectionName;
-
-        #endregion
 
         public WindowPosition(
             Window window,
@@ -118,13 +114,7 @@ namespace ClipTree.UI.Tools.Views
             }
         }
 
-        #region Public Properties
-
         public bool Changed { private get; set; }
-
-        #endregion
-
-        #region Private Properties
 
         private bool IsResizeable
         {
@@ -133,7 +123,5 @@ namespace ClipTree.UI.Tools.Views
                 return m_window.ResizeMode == ResizeMode.CanResizeWithGrip || m_window.ResizeMode == ResizeMode.CanResize;
             }
         }
-
-        #endregion
     }
 }

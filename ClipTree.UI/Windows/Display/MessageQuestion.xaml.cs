@@ -20,8 +20,6 @@ namespace ClipTree.Windows.Display
             lblMessage.Text = message;
         }
 
-        #region Private "Window" Events
-
         private void Window_OnActivated(object sender, EventArgs e)
         {
             WindowBorder.BorderBrush = Brushes.Gray;
@@ -40,10 +38,6 @@ namespace ClipTree.Windows.Display
             }
         }
 
-        #endregion
-
-        #region Private "Button" Events
-
         private void Button_Yes_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
@@ -57,7 +51,5 @@ namespace ClipTree.Windows.Display
 
             Close();
         }
-
-        #endregion
     }
 }

@@ -34,15 +34,11 @@ namespace ClipTree.UI.Tools.Extensions
             return new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
-        #region Private Helpers
-
         private static byte[] GetColorBytes(string color)
         {
             int colorValue = Convert.ToInt32(color);
 
             return BitConverter.GetBytes(colorValue);
         }
-
-        #endregion
     }
 }

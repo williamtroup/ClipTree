@@ -6,20 +6,12 @@ namespace ClipTree.UI.Tools.Actions
 {
     public class LockWindowActions
     {
-        #region Private Constants
-
         private const int WM_SYSCOMMAND = 0x0112;
         private const int SC_MOVE = 0xF010;
         private const int SC_MINIMIZE = 0xF020;
         private const int SC_MAXIMIZE = 0xF030;
 
-        #endregion
-
-        #region Private Read-Only Variables
-
         private readonly Window m_window;
-
-        #endregion
 
         public LockWindowActions(Window window)
         {
@@ -31,8 +23,6 @@ namespace ClipTree.UI.Tools.Actions
         public bool LockMoving { get; set; }
         public bool LockMinimizing { private get; set; }
         public bool LockMaximizing { private get; set; }
-
-        #region Private "WndProc" Helpers
 
         private void Hook()
         {
@@ -77,15 +67,9 @@ namespace ClipTree.UI.Tools.Actions
             return IntPtr.Zero;
         }
 
-        #endregion
-
-        #region PRivate "Window" Events
-
         private void Window_OnSourceInitialized(object sender, EventArgs e)
         {
             Hook();
         }
-
-        #endregion
     }
 }

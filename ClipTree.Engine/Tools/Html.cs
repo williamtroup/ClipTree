@@ -7,14 +7,10 @@ namespace ClipTree.Engine.Tools
 {
     public static class Html
     {
-        #region Private Constants
-
         private const string PreviewClipStorageFolder = "ClipPreviews";
         private const string PreviewLookTag1 = "<html>";
         private const string PreviewLookTag2 = "<head>";
         private const string PriviewTitle = "<html><title>\"{0}\" Clip</title>";
-
-        #endregion
 
         public static bool View(ClipboardHistoryItem clipboardHistoryItem)
         {
@@ -61,8 +57,6 @@ namespace ClipTree.Engine.Tools
             return returnHtml;
         }
 
-        #region Private Path Helpers
-
         private static string GetNewFilename()
         {
             DateTime dateTime = DateTime.Now;
@@ -100,7 +94,5 @@ namespace ClipTree.Engine.Tools
                 Directory.CreateDirectory(PreviewClipStorageFolder);
             }
         }
-
-        #endregion
     }
 }

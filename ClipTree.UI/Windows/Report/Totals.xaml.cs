@@ -14,11 +14,7 @@ namespace ClipTree.Windows.Report
 {
     public partial class Totals : Window
     {
-        #region Private Read-Only Variables
-
         private readonly WindowPosition m_windowPosition;
-
-        #endregion
 
         public Totals(IXMLSettings settings, Dictionary<TextDataFormat, int> totals)
         {
@@ -53,8 +49,6 @@ namespace ClipTree.Windows.Report
             }
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -69,10 +63,6 @@ namespace ClipTree.Windows.Report
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -96,7 +86,5 @@ namespace ClipTree.Windows.Report
         {
             m_windowPosition.Set();
         }
-
-        #endregion
     }
 }

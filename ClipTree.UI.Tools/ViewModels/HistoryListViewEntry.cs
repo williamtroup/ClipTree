@@ -4,12 +4,8 @@ namespace ClipTree.UI.Tools.ViewModels
 {
     public class HistoryListViewEntry
     {
-        #region Private Constants
-
         private const int MaximumTextDisplayLength = 250;
         private const string Ellipsis = "...";
-
-        #endregion
 
         public string Name { get; set; }
         public string Text { get; set; }
@@ -19,8 +15,6 @@ namespace ClipTree.UI.Tools.ViewModels
         public string DateTime { get; set; }
         public SolidColorBrush BackgroundColor { get; set; }
         public SolidColorBrush ForeColor { get; set; }
-
-        #region Property TextDisplay
 
         private string m_textDisplay;
 
@@ -34,7 +28,5 @@ namespace ClipTree.UI.Tools.ViewModels
                     : value;
             }
         }
-
-        #endregion
     }
 }

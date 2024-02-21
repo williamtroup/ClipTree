@@ -4,13 +4,9 @@ namespace ClipTree.Engine.Clipboard.Events
 {
     public class ItemMovedEventArgs : EventArgs
     {
-        #region Private Read-Only Variables
-
         private readonly int m_originalListIndex;
         private readonly int m_newListIndex;
         private readonly ClipboardHistoryItem m_item;
-
-        #endregion
 
         public ItemMovedEventArgs(int originalListIndex, int newListIndex, ClipboardHistoryItem item)
         {

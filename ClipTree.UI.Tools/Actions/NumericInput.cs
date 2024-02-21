@@ -7,11 +7,7 @@ namespace ClipTree.UI.Tools.Actions
 {
     public static class NumericInput
     {
-        #region Private Constants
-
         private const string ValidInput = "[^0-9]+";
-
-        #endregion
 
         public static void Make(TextBox textBox, string minimumValue = null)
         {
@@ -25,8 +21,6 @@ namespace ClipTree.UI.Tools.Actions
 
             DataObject.AddPastingHandler(textBox, TextBox_OnPaste);
         }
-
-        #region Private "Event" Helpers
 
         private static void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -54,7 +48,5 @@ namespace ClipTree.UI.Tools.Actions
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -14,12 +14,8 @@ namespace ClipTree.Windows.List
 {
     public partial class CleanUp : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IClipboardHistory m_clipboardHistory;
         private readonly WindowPosition m_windowPosition;
-
-        #endregion
 
         public CleanUp(IXMLSettings settings, IClipboardHistory clipboardHistory)
         {
@@ -50,8 +46,6 @@ namespace ClipTree.Windows.List
             txtDays.Focus();
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -66,10 +60,6 @@ namespace ClipTree.Windows.List
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -93,10 +83,6 @@ namespace ClipTree.Windows.List
         {
             m_windowPosition.Set();
         }
-
-        #endregion
-
-        #region Private "Clean" Events
 
         private void CleanButton_Click(object sender, RoutedEventArgs e)
         {
@@ -135,7 +121,5 @@ namespace ClipTree.Windows.List
                 Close();
             }
         }
-
-        #endregion
     }
 }

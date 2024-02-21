@@ -21,13 +21,7 @@ namespace ClipTree.Windows.Management
 {
     public partial class Options : Window
     {
-        #region Private Constants
-
         private const string AssemblyProductName = "ClipTree";
-
-        #endregion
-
-        #region Private Read-Only Variables
 
         private readonly IXMLSettings m_settings;
         private readonly IClipboardHistoryItems m_clipboardHistoryItems;
@@ -36,13 +30,7 @@ namespace ClipTree.Windows.Management
         private readonly WindowPosition m_windowPosition;
         private readonly RegistryKey m_startUpRegistryKey;
 
-        #endregion
-
-        #region Private Variables
-
         private bool m_savePosition = true;
-
-        #endregion
 
         public Options(IXMLSettings settings, IClipboardHistory clipboardHistory, IClipboardHistoryItems clipboardHistoryItems, Main main)
         {
@@ -121,8 +109,6 @@ namespace ClipTree.Windows.Management
             NumericInput.Make(txtUpdateClipboardInterval, Settings.MainWindow.UpdateClipboardInterval);
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -137,10 +123,6 @@ namespace ClipTree.Windows.Management
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -167,10 +149,6 @@ namespace ClipTree.Windows.Management
                 m_windowPosition.Set();
             }
         }
-
-        #endregion
-
-        #region Private "Button" Events
 
         private void RowColorsButton_Click(object sender, RoutedEventArgs e)
         {
@@ -292,7 +270,5 @@ namespace ClipTree.Windows.Management
         {
             return checkbox.IsReallyChecked().ToNumericString();
         }
-
-        #endregion
     }
 }

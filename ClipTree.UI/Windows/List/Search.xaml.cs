@@ -16,19 +16,11 @@ namespace ClipTree.Windows.List
 {
     public partial class Search : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IXMLSettings m_settings;
         private readonly IClipboardHistoryItems m_clipboardHistoryItems;
         private readonly WindowPosition m_windowPosition;
 
-        #endregion
-
-        #region Private Variables
-
         private bool m_wasSearchConducted;
-
-        #endregion
 
         public Search(IXMLSettings settings, IClipboardHistoryItems clipboardHistoryItems)
         {
@@ -94,8 +86,6 @@ namespace ClipTree.Windows.List
             }
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -110,10 +100,6 @@ namespace ClipTree.Windows.List
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -159,10 +145,6 @@ namespace ClipTree.Windows.List
                 m_settings.SaveDocument(xmlDocument);
             }
         }
-
-        #endregion
-
-        #region Private "Search Button" Events
 
         private void LastButton_OnClick(object sender, RoutedEventArgs e)
         {
@@ -238,7 +220,5 @@ namespace ClipTree.Windows.List
                 return searchType;
             }
         }
-
-        #endregion
     }
 }

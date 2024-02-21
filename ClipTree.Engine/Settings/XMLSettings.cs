@@ -7,23 +7,15 @@ namespace ClipTree.Engine.Settings
 {
 	public class XMLSettings : IXMLSettings
 	{
-		#region Private Constants
-
-		private const string EntryName = "Name";
+        private const string EntryName = "Name";
 		private const string EntryValue = "Value";
 		private const string EntryFormat = "/{0}/{1}/{2}[@{3}=\"{4}\"]";
 
-		#endregion
-
-		#region Private ReadOnly Variables
-
-		private readonly string m_filename;
+        private readonly string m_filename;
 		private readonly string m_root;
 		private readonly string m_entryName;
 
-		#endregion
-
-		public XMLSettings(string filename = "settings.xml", string root = "Configuration", string entryName = "Setting")
+        public XMLSettings(string filename = "settings.xml", string root = "Configuration", string entryName = "Setting")
 		{
 			m_filename = filename;
 			m_root = root;
@@ -178,9 +170,7 @@ namespace ClipTree.Engine.Settings
 			return items;
 		}
 
-		#region Private Helpers
-
-		private XmlDocument LoadDocument(XmlDocument xmlOverrideDocument)
+        private XmlDocument LoadDocument(XmlDocument xmlOverrideDocument)
 		{
 			XmlDocument xmlDocument = xmlOverrideDocument ?? new XmlDocument();
 
@@ -207,7 +197,5 @@ namespace ClipTree.Engine.Settings
 				}
 			}
 		}
-
-		#endregion
-	}
+    }
 }

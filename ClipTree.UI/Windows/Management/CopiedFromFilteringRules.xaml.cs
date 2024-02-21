@@ -16,19 +16,11 @@ namespace ClipTree.Windows.Management
 {
     public partial class CopiedFromFilteringRules : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IXMLSettings m_settings;
         private readonly Main m_main;
         private readonly WindowPosition m_windowPosition;
 
-        #endregion
-
-        #region Private Variables
-
         private bool m_running = true;
-
-        #endregion 
 
         public CopiedFromFilteringRules(IXMLSettings settings, Main main)
         {
@@ -85,13 +77,7 @@ namespace ClipTree.Windows.Management
             return lstvRules.Items.Cast<FilteringRuleListViewEntry>().Any(listViewItem => string.Equals(listViewItem.CopiedFrom, copiedFrom, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        #region Private Properties
-
         private bool Changed { get; set; }
-
-        #endregion
-
-        #region Private "Title Bar" Events
 
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -107,10 +93,6 @@ namespace ClipTree.Windows.Management
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -140,10 +122,6 @@ namespace ClipTree.Windows.Management
 
             m_windowPosition.Set();
         }
-
-        #endregion
-
-        #region Private "Editing Button" Events
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
@@ -198,10 +176,6 @@ namespace ClipTree.Windows.Management
             }
         }
 
-        #endregion
-
-        #region Private "Updating" Events
-
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             if (Changed)
@@ -224,10 +198,6 @@ namespace ClipTree.Windows.Management
 
             Close();
         }
-
-        #endregion
-
-        #region Private "Update Window Thread" Helpers
 
         private void SetupWindowUpdateThread()
         {
@@ -266,7 +236,5 @@ namespace ClipTree.Windows.Management
                 Opacity = 1.0;
             }
         }
-
-        #endregion
     }
 }

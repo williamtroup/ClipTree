@@ -18,16 +18,12 @@ namespace ClipTree.UI.Tools.Views
 {
     public class ClipboardHistoryItems : IClipboardHistoryItems
     {
-        #region Private Read-Only Variables
-
         private readonly ListView m_listView;
         private readonly IClipboardHistory m_clipboardHistory;
         private readonly IXMLSettings m_settings;
         private readonly string m_defaultName;
         private readonly string m_defaultProcessName;
         private readonly string m_defaultLockedState;
-
-        #endregion
 
         public ClipboardHistoryItems(
             ListView listView, 
@@ -346,14 +342,8 @@ namespace ClipTree.UI.Tools.Views
         public bool RememberHistoryBetweenSessions { get; set; }
         public int TotalItemsToShowInList { get; set; }
 
-        #region Private Properties
-
         private Dictionary<string, int> RowColors { get; set; }
         private Dictionary<string, int> RowTextColors { get; set; }
-
-        #endregion
-
-        #region Private Adding Helpers
 
         private void AddListItem(ClipboardHistoryItem clipboardTextItem, int insertIndex = -1)
         {
@@ -427,10 +417,6 @@ namespace ClipTree.UI.Tools.Views
             return color;
         }
 
-        #endregion
-
-        #region Private Search Helpers
-
         private static bool DoesListViewItemContainText(ClipboardHistoryItem clipboardHistoryItem, string text, bool matchCase, SearchType searchType)
         {
             bool returnFlag = false;
@@ -472,10 +458,6 @@ namespace ClipTree.UI.Tools.Views
 
             return returnFlag;
         }
-
-        #endregion
-
-        #region Private "Clipboard History" Events
 
         private void AssignClipboardHistoryEvents()
         {
@@ -575,10 +557,6 @@ namespace ClipTree.UI.Tools.Views
             m_listView.SelectedItems.Add(originalItem);
         }
 
-        #endregion
-
-        #region Private Helpers
-
         private void FocusSelectedItem(int listIndex)
         {
             ItemContainerGenerator itemContainerGenerator = m_listView.ItemContainerGenerator;
@@ -595,7 +573,5 @@ namespace ClipTree.UI.Tools.Views
         {
             return string.Format("{0}{1}", parameters.ToArray());
         }
-
-        #endregion
     }
 }

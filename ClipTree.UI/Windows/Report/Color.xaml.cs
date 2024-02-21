@@ -12,12 +12,8 @@ namespace ClipTree.Windows.Report
 {
     public partial class Color : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IXMLSettings m_settings;
         private readonly WindowPosition m_windowPosition;
-
-        #endregion
 
         public Color(IXMLSettings settings, string hexColor)
         {
@@ -48,8 +44,6 @@ namespace ClipTree.Windows.Report
             InnerWindowBorder.Background = solidColorBrush;
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -64,10 +58,6 @@ namespace ClipTree.Windows.Report
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -91,7 +81,5 @@ namespace ClipTree.Windows.Report
         {
             m_windowPosition.Set();
         }
-
-        #endregion
     }
 }

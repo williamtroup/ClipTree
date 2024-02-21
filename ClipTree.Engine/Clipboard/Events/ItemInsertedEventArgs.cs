@@ -4,11 +4,7 @@ namespace ClipTree.Engine.Clipboard.Events
 {
     public class ItemInsertedEventArgs : EventArgs
     {
-        #region Private Read-Only Variables
-
         private readonly ClipboardHistoryItem m_item;
-
-        #endregion
 
         public ItemInsertedEventArgs(ClipboardHistoryItem item)
         {

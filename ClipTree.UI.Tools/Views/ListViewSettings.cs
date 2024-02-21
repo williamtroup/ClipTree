@@ -7,14 +7,10 @@ namespace ClipTree.UI.Tools.Views
 {
     public class ListViewSettings
     {
-        #region Private Read-Only Variables
-
         private readonly IXMLSettings m_settings;
         private readonly ListView m_listView;
         private readonly GridView m_gridView;
         private readonly string m_sectionName;
-
-        #endregion
 
         public ListViewSettings(IXMLSettings settings, ListView listView, string sectionName = "Columns")
         {
@@ -41,8 +37,6 @@ namespace ClipTree.UI.Tools.Views
             m_settings.SaveDocument(xmlDocument);
         }
 
-        #region Private Get Helpers
-
         private void GetColumnWidths()
         {
             int columnIndex = 0;
@@ -61,7 +55,5 @@ namespace ClipTree.UI.Tools.Views
                 columnIndex++;
             }
         }
-
-        #endregion
     }
 }

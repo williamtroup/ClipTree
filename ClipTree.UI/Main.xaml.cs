@@ -30,14 +30,8 @@ namespace ClipTree
 {
     public partial class Main : Window
     {
-        #region Private Constants
-
         private const int UpdateWindowInterval = 50;
         private const double OpacityIncriment = 0.08;
-
-        #endregion
-
-        #region Private Read-Only Variables
 
         private readonly IXMLSettings m_settings;
         private readonly WindowPosition m_windowPosition;
@@ -46,10 +40,6 @@ namespace ClipTree
         private readonly IClipboardHistoryItems m_clipboardHistoryItems;
         private readonly FilenameDialog m_filenameDialog;
         private readonly LockWindowActions m_lockWindowActions;
-
-        #endregion
-
-        #region Private Variables
 
         private bool m_updateWindowThreadRunning = true;
         private bool m_enableOnTopRules;
@@ -62,8 +52,6 @@ namespace ClipTree
         private bool m_showShortcutButtonsOnClipWindow;
         private bool m_viewHTMLHexColorsAsAnActualColor;
         private WindowMode m_windowMode;
-
-        #endregion
 
         public Main(IXMLSettings settings)
         {
@@ -247,8 +235,6 @@ namespace ClipTree
             bPauseEngine.Visibility = m_clipboardHistory.EngineRunning ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        #region Base Overrides
-
         public new void Show()
         {
             base.Show();
@@ -258,10 +244,6 @@ namespace ClipTree
                 WindowState = WindowState.Normal;
             }
         }
-
-        #endregion
-
-        #region Private Window Update Thread
 
         private void SetupWindowUpdateThread()
         {
@@ -411,10 +393,6 @@ namespace ClipTree
             }
         }
 
-        #endregion
-
-        #region Private "Title Context Menu" Events
-
         private void ContextMenu_DockToTheRight_OnClick(object sender, RoutedEventArgs e)
         {
             double maximumHeight = SystemParameters.WorkArea.Height;
@@ -443,10 +421,6 @@ namespace ClipTree
         {
             ExitButton_Click(sender, null);
         }
-
-        #endregion
-
-        #region Private "History Context Menu" Events
 
         private void ContextMenu_Save_OnClick(object sender, RoutedEventArgs e)
         {
@@ -692,10 +666,6 @@ namespace ClipTree
             return !string.IsNullOrEmpty(data) && data.Length == 7 && data.StartsWith("#");
         }
 
-        #endregion
-
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left && !m_lockWindowActions.LockMoving)
@@ -770,10 +740,6 @@ namespace ClipTree
         {
             m_windowMode = WindowMode.Close;
         }
-
-        #endregion
-
-        #region Private "Status Bar" Events
 
         private void StartPauseEngine_Click(object sender, RoutedEventArgs e)
         {
@@ -857,10 +823,6 @@ namespace ClipTree
 
             cleanUp.ShowDialog();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -981,10 +943,6 @@ namespace ClipTree
             }
         }
 
-        #endregion
-
-        #region Private "ListView" Events
-
         private void History_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (mnuViewClip.IsEnabled)
@@ -1013,10 +971,6 @@ namespace ClipTree
                 }
             }
         }
-
-        #endregion
-
-        #region Private "Message" Helpers
 
         private bool IsActionConfirmation(string message, bool showMessage)
         {
@@ -1049,10 +1003,6 @@ namespace ClipTree
             messageInformation.ShowDialog();
         }
 
-        #endregion
-
-        #region Private "Log" Helpers
-
         private ILog Log
         {
             get
@@ -1060,7 +1010,5 @@ namespace ClipTree
                 return LogManager.GetLogger(GetType());
             }
         }
-
-        #endregion
     }
 }

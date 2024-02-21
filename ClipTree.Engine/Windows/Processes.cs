@@ -6,11 +6,7 @@ namespace ClipTree.Engine.Windows
 {
     public static class Processes
     {
-        #region Private Static Variables
-
         private static object m_lockObject = new object();
-
-        #endregion
 
         public static Process GetFocused()
         {

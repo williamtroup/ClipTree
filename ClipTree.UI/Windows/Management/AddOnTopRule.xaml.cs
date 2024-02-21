@@ -13,13 +13,9 @@ namespace ClipTree.Windows.Management
 {
     public partial class AddOnTopRule : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IXMLSettings m_settings;
         private readonly OnTopRules m_onTopRules;
         private readonly WindowPosition m_windowPosition;
-
-        #endregion
 
         public AddOnTopRule(IXMLSettings settings, OnTopRules onTopRules)
         {
@@ -53,8 +49,6 @@ namespace ClipTree.Windows.Management
             txtCopiedFrom.Focus();
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -69,10 +63,6 @@ namespace ClipTree.Windows.Management
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -98,10 +88,6 @@ namespace ClipTree.Windows.Management
 
             m_settings.Write(Settings.AddOnTopRuleWindow.AddOnTopRuleOptions, nameof(Settings.AddOnTopRuleWindow.CloseWindowAfterAdding), chkCloseWindowAfterAdding.IsReallyChecked().ToNumericString());
         }
-
-        #endregion
-
-        #region Private "Adding" Events
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
@@ -141,7 +127,5 @@ namespace ClipTree.Windows.Management
                 }
             }
         }
-
-        #endregion
     }
 }

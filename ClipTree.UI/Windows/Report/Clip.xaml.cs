@@ -17,15 +17,11 @@ namespace ClipTree.Windows.Report
 {
     public partial class Clip : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IClipboardHistory m_clipboardHistory;
         private readonly IClipboardHistoryItems m_clipboardHistoryItems;
         private readonly ClipboardHistoryItem m_clipboardHistoryItem;
         private readonly WindowPosition m_windowPosition;
         private readonly bool m_showShortcutButtonsOnClipWindow;
-
-        #endregion
 
         public Clip(
             IXMLSettings settings, 
@@ -89,8 +85,6 @@ namespace ClipTree.Windows.Report
             rtbClip.Focus();
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -105,10 +99,6 @@ namespace ClipTree.Windows.Report
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -138,10 +128,6 @@ namespace ClipTree.Windows.Report
             m_windowPosition.Changed = true;
         }
 
-        #endregion
-
-        #region Private "Clipboard Buttons" Events
-
         private void Button_SetAsCurrent_OnClick(object sender, RoutedEventArgs e)
         {
             m_clipboardHistory.SetCurrentText(m_clipboardHistoryItem.Text, m_clipboardHistoryItem.Type, m_clipboardHistoryItem.CopiedFrom);
@@ -168,7 +154,5 @@ namespace ClipTree.Windows.Report
 
             Close();
         }
-
-        #endregion
     }
 }

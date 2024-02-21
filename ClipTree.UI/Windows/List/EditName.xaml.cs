@@ -14,14 +14,10 @@ namespace ClipTree.Windows.List
 {
     public partial class EditName : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IClipboardHistory m_clipboardHistory;
         private readonly IClipboardHistoryItems m_clipboardHistoryItems;
         private readonly int m_selectedIndex;
         private readonly WindowPosition m_windowPosition;
-
-        #endregion
 
         public EditName(IXMLSettings settings, IClipboardHistory clipboardHistory, IClipboardHistoryItems clipboardHistoryItems, int selectedIndex)
         {
@@ -57,8 +53,6 @@ namespace ClipTree.Windows.List
             txtName.SelectAll();
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -73,10 +67,6 @@ namespace ClipTree.Windows.List
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -101,10 +91,6 @@ namespace ClipTree.Windows.List
             m_windowPosition.Set();
             m_clipboardHistory.StartTracking();
         }
-
-        #endregion
-
-        #region Private "Updating" Events
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
@@ -133,7 +119,5 @@ namespace ClipTree.Windows.List
                 Close();
             }
         }
-
-        #endregion
     }
 }

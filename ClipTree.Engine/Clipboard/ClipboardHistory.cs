@@ -14,25 +14,15 @@ namespace ClipTree.Engine.Clipboard
 {
     public class ClipboardHistory : Logging, IClipboardHistory
     {
-        #region Private Read-Only Variables
-
         private readonly string m_defaultName;
         private readonly string m_defaultProcessName;
         private readonly string m_enabledYes;
         private readonly string m_enabledNo;
         private readonly SynchronizationContext m_synchronizationContext;
 
-        #endregion
-
-        #region Private Members
-
         private bool m_running;
         private bool m_firstPassWhenRunning = true;
         private string m_overrideDefaultCopiedFrom;
-
-        #endregion
-
-        #region Public Events
 
         public event ItemRemovedHandler OnItemRemoved;
         public event ItemMovedHandler OnItemMoved;
@@ -40,8 +30,6 @@ namespace ClipTree.Engine.Clipboard
         public event ItemsInsertedHandler OnItemInserted;
         public event AllItemsUpdatedHandler OnAllItemsUpdated;
         public event ItemUpdatedHandler OnItemUpdated;
-
-        #endregion
 
         public ClipboardHistory(string defaultName, string defaultProcessName, string enabledYes, string enabledNo)
         {
@@ -299,8 +287,6 @@ namespace ClipTree.Engine.Clipboard
             }
         }
 
-        #region Public Properties
-
         public bool DisableAllClipboardCopying { get; set; }
         public List<ClipboardHistoryItem> Items { get; }
         public bool EnableCopiedFromFiltering { get; set; }
@@ -309,10 +295,6 @@ namespace ClipTree.Engine.Clipboard
         public int UpdateInterval { get; set; }
         public bool EngineRunning { get; set; }
         public bool AutoTrimTextAndUnicodeEntries { get; set; }
-
-        #endregion
-
-        #region Private Main Thread
 
         private void PopulateHistoryThread()
         {
@@ -388,10 +370,6 @@ namespace ClipTree.Engine.Clipboard
                 Thread.Sleep(UpdateInterval);
             }
         }
-
-        #endregion
-
-        #region Private Clipboard Helpers
 
         private static bool IsClipboardBeingUsedByAnotherProcess()
         {
@@ -480,10 +458,6 @@ namespace ClipTree.Engine.Clipboard
             return data;
         }
 
-        #endregion
-
-        #region Private History Item Setup Getters
-
         private bool GetCurrentProcessName(out string currentProcessName)
         {
             string processName = m_overrideDefaultCopiedFrom ?? m_defaultProcessName;
@@ -541,7 +515,5 @@ namespace ClipTree.Engine.Clipboard
 
             return index;
         }
-
-        #endregion
     }
 }

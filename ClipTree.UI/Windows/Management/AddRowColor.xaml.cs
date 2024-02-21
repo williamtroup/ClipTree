@@ -13,13 +13,9 @@ namespace ClipTree.Windows.Management
 {
     public partial class AddRowColor : Window
     {
-        #region Private Read-Only Variables
-
         private readonly IXMLSettings m_settings;
         private readonly RowColors m_rowColors;
         private readonly WindowPosition m_windowPosition;
-
-        #endregion
 
         public AddRowColor(IXMLSettings settings, RowColors rowColors)
         {
@@ -61,8 +57,6 @@ namespace ClipTree.Windows.Management
             cpTextColor.SelectedColor = Colors.Black;
         }
 
-        #region Private "Title Bar" Events
-
         private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -77,10 +71,6 @@ namespace ClipTree.Windows.Management
         {
             Close();
         }
-
-        #endregion
-
-        #region Private "Window" Events
 
         private void Window_OnActivated(object sender, EventArgs e)
         {
@@ -106,10 +96,6 @@ namespace ClipTree.Windows.Management
 
             m_settings.Write(Settings.AddRowColorWindow.AddRowColorOptions, nameof(Settings.AddRowColorWindow.CloseWindowAfterAdding), chkCloseWindowAfterAdding.IsReallyChecked().ToNumericString());
         }
-
-        #endregion
-
-        #region Private "Adding" Events
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
@@ -168,7 +154,5 @@ namespace ClipTree.Windows.Management
         {
             return (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
         }
-
-        #endregion
     }
 }

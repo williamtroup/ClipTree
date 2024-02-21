@@ -13,15 +13,11 @@ namespace ClipTree.UI.Tools.Views
 {
     public class FilenameDialog
     {
-        #region Private Read-Only Variables
-
         private readonly IClipboardHistory m_clipboardHistory;
         private readonly IClipboardHistoryItems m_clipboardHistoryItems;
         private readonly string m_htmlFilesFilter;
         private readonly string m_richTextFilesFilter;
         private readonly string m_textFilesFilter;
-
-        #endregion
 
         public FilenameDialog(
             IClipboardHistory clipboardHistory, 
@@ -126,8 +122,6 @@ namespace ClipTree.UI.Tools.Views
             }
         }
 
-        #region Private Saving Helpers
-
         private static void WriteRichText(string filename, ClipboardHistoryItem clipboardHistoryItem)
         {
             RichTextBox richTextBox = new RichTextBox();
@@ -144,7 +138,5 @@ namespace ClipTree.UI.Tools.Views
                 fileStream.Close();
             }
         }
-
-        #endregion
     }
 }
