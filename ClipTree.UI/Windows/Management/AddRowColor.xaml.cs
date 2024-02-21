@@ -9,150 +9,149 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace ClipTree.Windows.Management
+namespace ClipTree.Windows.Management;
+
+public partial class AddRowColor : Window
 {
-    public partial class AddRowColor : Window
+    private readonly IXMLSettings m_settings;
+    private readonly RowColors m_rowColors;
+    private readonly WindowPosition m_windowPosition;
+
+    public AddRowColor(IXMLSettings settings, RowColors rowColors)
     {
-        private readonly IXMLSettings m_settings;
-        private readonly RowColors m_rowColors;
-        private readonly WindowPosition m_windowPosition;
+        InitializeComponent();
 
-        public AddRowColor(IXMLSettings settings, RowColors rowColors)
+        m_settings = settings;
+        m_rowColors = rowColors;
+        m_windowPosition = new WindowPosition(this, m_settings, Width, Height, GetName);
+
+        SetupDisplay();
+
+        BackgroundAction.Run(() => m_windowPosition.Get());
+    }
+
+    public static string GetName
+    {
+        get
         {
-            InitializeComponent();
-
-            m_settings = settings;
-            m_rowColors = rowColors;
-            m_windowPosition = new WindowPosition(this, m_settings, Width, Height, GetName);
-
-            SetupDisplay();
-
-            BackgroundAction.Run(() => m_windowPosition.Get());
+            return string.Format(Settings.WindowNameFormat, nameof(AddRowColor), Settings.Window);
         }
+    }
 
-        public static string GetName
+    private void SetupDisplay()
+    {
+        int closeWindowAfterAdding = Convert.ToInt32(m_settings.Read(Settings.AddRowColorWindow.AddRowColorOptions, nameof(Settings.AddRowColorWindow.CloseWindowAfterAdding), Settings.AddRowColorWindow.CloseWindowAfterAdding));
+
+        chkCloseWindowAfterAdding.IsChecked = closeWindowAfterAdding > 0;
+
+        SetColorDefaults();
+
+        lblErrorMessage.Visibility = Visibility.Hidden;
+
+        txtCopiedFrom.Focus();
+    }
+
+    private void SetColorDefaults()
+    {
+        cpRowColor.SelectedColor = Colors.White;
+        cpTextColor.SelectedColor = Colors.Black;
+    }
+
+    private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left)
         {
-            get
-            {
-                return string.Format(Settings.WindowNameFormat, nameof(AddRowColor), Settings.Window);
-            }
+            DragMove();
+
+            m_windowPosition.Changed = true;
         }
+    }
 
-        private void SetupDisplay()
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void Window_OnActivated(object sender, EventArgs e)
+    {
+        WindowBorder.Background = Brushes.Gray;
+    }
+
+    private void Window_OnDeactivated(object sender, EventArgs e)
+    {
+        WindowBorder.Background = Brushes.DarkGray;
+    }
+
+    private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (KeyStroke.IsAltKey(Key.Space))
         {
-            int closeWindowAfterAdding = Convert.ToInt32(m_settings.Read(Settings.AddRowColorWindow.AddRowColorOptions, nameof(Settings.AddRowColorWindow.CloseWindowAfterAdding), Settings.AddRowColorWindow.CloseWindowAfterAdding));
+            e.Handled = true;
+        }
+    }
 
-            chkCloseWindowAfterAdding.IsChecked = closeWindowAfterAdding > 0;
+    private void Window_OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        m_windowPosition.Set();
 
-            SetColorDefaults();
+        m_settings.Write(Settings.AddRowColorWindow.AddRowColorOptions, nameof(Settings.AddRowColorWindow.CloseWindowAfterAdding), chkCloseWindowAfterAdding.IsReallyChecked().ToNumericString());
+    }
 
-            lblErrorMessage.Visibility = Visibility.Hidden;
+    private void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+        string newCopiedFrom = txtCopiedFrom.Text.Trim();
+
+        if (string.IsNullOrEmpty(newCopiedFrom))
+        {
+            lblErrorMessage.Content = ClipTree.Resources.Dialog.NoCopiedFromEntered;
+            lblErrorMessage.Visibility = Visibility.Visible;
 
             txtCopiedFrom.Focus();
         }
-
-        private void SetColorDefaults()
+        else if (cpRowColor.SelectedColor == null)
         {
-            cpRowColor.SelectedColor = Colors.White;
-            cpTextColor.SelectedColor = Colors.Black;
+            lblErrorMessage.Content = ClipTree.Resources.Dialog.AddColorNoRowColorSelected;
+            lblErrorMessage.Visibility = Visibility.Visible;
+
+            cpRowColor.Focus();
         }
-
-        private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
+        else if (cpTextColor.SelectedColor == null)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            lblErrorMessage.Content = ClipTree.Resources.Dialog.AddColorNoTextColorSelected;
+            lblErrorMessage.Visibility = Visibility.Visible;
+
+            cpTextColor.Focus();
+        }
+        else if (m_rowColors.DoesRowColorExist(newCopiedFrom))
+        {
+            lblErrorMessage.Content = ClipTree.Resources.Dialog.AddColorCopiedFromColorAlreadyExists;
+            lblErrorMessage.Visibility = Visibility.Visible;
+
+            txtCopiedFrom.Focus();
+        }
+        else
+        {
+            Color selectedRowColor = cpRowColor.SelectedColor.Value;
+            Color selectedTextColor = cpTextColor.SelectedColor.Value;
+
+            m_rowColors.AddListItem(newCopiedFrom, GetColorInteger(selectedRowColor).ToString(), GetColorInteger(selectedTextColor).ToString());
+
+            if (chkCloseWindowAfterAdding.IsReallyChecked())
             {
-                DragMove();
-
-                m_windowPosition.Changed = true;
-            }
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void Window_OnActivated(object sender, EventArgs e)
-        {
-            WindowBorder.Background = Brushes.Gray;
-        }
-
-        private void Window_OnDeactivated(object sender, EventArgs e)
-        {
-            WindowBorder.Background = Brushes.DarkGray;
-        }
-
-        private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (KeyStroke.IsAltKey(Key.Space))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void Window_OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            m_windowPosition.Set();
-
-            m_settings.Write(Settings.AddRowColorWindow.AddRowColorOptions, nameof(Settings.AddRowColorWindow.CloseWindowAfterAdding), chkCloseWindowAfterAdding.IsReallyChecked().ToNumericString());
-        }
-
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            string newCopiedFrom = txtCopiedFrom.Text.Trim();
-
-            if (string.IsNullOrEmpty(newCopiedFrom))
-            {
-                lblErrorMessage.Content = ClipTree.Resources.Dialog.NoCopiedFromEntered;
-                lblErrorMessage.Visibility = Visibility.Visible;
-
-                txtCopiedFrom.Focus();
-            }
-            else if (cpRowColor.SelectedColor == null)
-            {
-                lblErrorMessage.Content = ClipTree.Resources.Dialog.AddColorNoRowColorSelected;
-                lblErrorMessage.Visibility = Visibility.Visible;
-
-                cpRowColor.Focus();
-            }
-            else if (cpTextColor.SelectedColor == null)
-            {
-                lblErrorMessage.Content = ClipTree.Resources.Dialog.AddColorNoTextColorSelected;
-                lblErrorMessage.Visibility = Visibility.Visible;
-
-                cpTextColor.Focus();
-            }
-            else if (m_rowColors.DoesRowColorExist(newCopiedFrom))
-            {
-                lblErrorMessage.Content = ClipTree.Resources.Dialog.AddColorCopiedFromColorAlreadyExists;
-                lblErrorMessage.Visibility = Visibility.Visible;
-
-                txtCopiedFrom.Focus();
+                Close();
             }
             else
             {
-                Color selectedRowColor = cpRowColor.SelectedColor.Value;
-                Color selectedTextColor = cpTextColor.SelectedColor.Value;
+                SetColorDefaults();
 
-                m_rowColors.AddListItem(newCopiedFrom, GetColorInteger(selectedRowColor).ToString(), GetColorInteger(selectedTextColor).ToString());
-
-                if (chkCloseWindowAfterAdding.IsReallyChecked())
-                {
-                    Close();
-                }
-                else
-                {
-                    SetColorDefaults();
-
-                    txtCopiedFrom.Text = string.Empty;
-                    txtCopiedFrom.Focus();
-                }
+                txtCopiedFrom.Text = string.Empty;
+                txtCopiedFrom.Focus();
             }
         }
+    }
 
-        private int GetColorInteger(Color color)
-        {
-            return (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
-        }
+    private int GetColorInteger(Color color)
+    {
+        return (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
     }
 }

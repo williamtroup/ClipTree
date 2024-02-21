@@ -1,8 +1,7 @@
-﻿namespace ClipTree.UI.Tools.ViewModels
+﻿namespace ClipTree.UI.Tools.ViewModels;
+
+public class TotalListViewEntry
 {
-    public class TotalListViewEntry
-    {
-        public string Type { get; set; }
-        public string Total { get; set; }
-    }
+    public string Type { get; set; }
+    public string Total { get; set; }
 }

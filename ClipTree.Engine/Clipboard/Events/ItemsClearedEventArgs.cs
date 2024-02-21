@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace ClipTree.Engine.Clipboard.Events
+namespace ClipTree.Engine.Clipboard.Events;
+
+public class ItemsClearedEventArgs : EventArgs
 {
-    public class ItemsClearedEventArgs : EventArgs
-    {
-    }
 }

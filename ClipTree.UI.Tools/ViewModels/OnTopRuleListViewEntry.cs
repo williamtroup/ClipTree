@@ -1,8 +1,7 @@
-﻿namespace ClipTree.UI.Tools.ViewModels
+﻿namespace ClipTree.UI.Tools.ViewModels;
+
+public class OnTopRuleListViewEntry
 {
-    public class OnTopRuleListViewEntry
-    {
-        public string CopiedFrom { get; set; }
-        public string Enabled { get; set; }
-    }
+    public string CopiedFrom { get; set; }
+    public string Enabled { get; set; }
 }

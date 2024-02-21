@@ -1,8 +1,7 @@
-﻿namespace ClipTree.UI.Tools.Enums
+﻿namespace ClipTree.UI.Tools.Enums;
+
+public enum WindowMode
 {
-    public enum WindowMode
-    {
-        Load,
-        Close
-    }
+    Load,
+    Close
 }

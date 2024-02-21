@@ -2,52 +2,51 @@
 using System.Diagnostics;
 using ClipTree.Engine.Api;
 
-namespace ClipTree.Engine.Windows
+namespace ClipTree.Engine.Windows;
+
+public static class Processes
 {
-    public static class Processes
+    private static object m_lockObject = new object();
+
+    public static Process GetFocused()
     {
-        private static object m_lockObject = new object();
+        Process process;
 
-        public static Process GetFocused()
+        lock (m_lockObject)
         {
-            Process process;
+            IntPtr handle = IntPtr.Zero;
+            handle = Win32.GetForegroundWindow();
 
-            lock (m_lockObject)
-            {
-                IntPtr handle = IntPtr.Zero;
-                handle = Win32.GetForegroundWindow();
+            Win32.GetWindowThreadProcessId(handle, out uint processId);
 
-                Win32.GetWindowThreadProcessId(handle, out uint processId);
-
-                process = Process.GetProcessById((int) processId);
-            }
-
-            return process;
+            process = Process.GetProcessById((int) processId);
         }
 
-        public static bool IsRunning(string processName = null, int processesAllowed = 1)
-        {
-            processName = processName ?? Process.GetCurrentProcess().ProcessName;
+        return process;
+    }
+
+    public static bool IsRunning(string processName = null, int processesAllowed = 1)
+    {
+        processName = processName ?? Process.GetCurrentProcess().ProcessName;
     
-            Process[] processes = Process.GetProcessesByName(processName);
+        Process[] processes = Process.GetProcessesByName(processName);
 
-            return processes.Length > processesAllowed;
-        }
+        return processes.Length > processesAllowed;
+    }
 
-        public static bool Start(string path)
+    public static bool Start(string path)
+    {
+        bool ran = true;
+
+        try
         {
-            bool ran = true;
-
-            try
-            {
-                Process.Start(path);
-            }
-            catch
-            {
-                ran = false;
-            }
-
-            return ran;
+            Process.Start(path);
         }
+        catch
+        {
+            ran = false;
+        }
+
+        return ran;
     }
 }

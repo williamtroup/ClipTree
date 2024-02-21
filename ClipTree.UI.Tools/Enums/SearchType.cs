@@ -1,10 +1,9 @@
-﻿namespace ClipTree.UI.Tools.Enums
+﻿namespace ClipTree.UI.Tools.Enums;
+
+public enum SearchType
 {
-    public enum SearchType
-    {
-        Contains,
-        StartsWith,
-        EndsWith,
-        WholeWordOnly
-    }
+    Contains,
+    StartsWith,
+    EndsWith,
+    WholeWordOnly
 }

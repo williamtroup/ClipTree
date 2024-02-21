@@ -9,122 +9,121 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace ClipTree.Windows.Management
+namespace ClipTree.Windows.Management;
+
+public partial class AddOnTopRule : Window
 {
-    public partial class AddOnTopRule : Window
+    private readonly IXMLSettings m_settings;
+    private readonly OnTopRules m_onTopRules;
+    private readonly WindowPosition m_windowPosition;
+
+    public AddOnTopRule(IXMLSettings settings, OnTopRules onTopRules)
     {
-        private readonly IXMLSettings m_settings;
-        private readonly OnTopRules m_onTopRules;
-        private readonly WindowPosition m_windowPosition;
+        InitializeComponent();
 
-        public AddOnTopRule(IXMLSettings settings, OnTopRules onTopRules)
+        m_settings = settings;
+        m_onTopRules = onTopRules;
+        m_windowPosition = new WindowPosition(this, m_settings, Width, Height, GetName);
+
+        SetupDisplay();
+
+        BackgroundAction.Run(() => m_windowPosition.Get());
+    }
+
+    public static string GetName
+    {
+        get
         {
-            InitializeComponent();
-
-            m_settings = settings;
-            m_onTopRules = onTopRules;
-            m_windowPosition = new WindowPosition(this, m_settings, Width, Height, GetName);
-
-            SetupDisplay();
-
-            BackgroundAction.Run(() => m_windowPosition.Get());
+            return string.Format(Settings.WindowNameFormat, nameof(AddOnTopRule), Settings.Window);
         }
+    }
 
-        public static string GetName
+    private void SetupDisplay()
+    {
+        int closeWindowAfterAdding = Convert.ToInt32(m_settings.Read(Settings.AddOnTopRuleWindow.AddOnTopRuleOptions, nameof(Settings.AddOnTopRuleWindow.CloseWindowAfterAdding), Settings.AddOnTopRuleWindow.CloseWindowAfterAdding));
+
+        chkCloseWindowAfterAdding.IsChecked = closeWindowAfterAdding > 0;
+
+        lblErrorMessage.Visibility = Visibility.Hidden;
+
+        txtCopiedFrom.Focus();
+    }
+
+    private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left)
         {
-            get
-            {
-                return string.Format(Settings.WindowNameFormat, nameof(AddOnTopRule), Settings.Window);
-            }
+            DragMove();
+
+            m_windowPosition.Changed = true;
         }
+    }
 
-        private void SetupDisplay()
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void Window_OnActivated(object sender, EventArgs e)
+    {
+        WindowBorder.Background = Brushes.Gray;
+    }
+
+    private void Window_OnDeactivated(object sender, EventArgs e)
+    {
+        WindowBorder.Background = Brushes.DarkGray;
+    }
+
+    private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (KeyStroke.IsAltKey(Key.Space))
         {
-            int closeWindowAfterAdding = Convert.ToInt32(m_settings.Read(Settings.AddOnTopRuleWindow.AddOnTopRuleOptions, nameof(Settings.AddOnTopRuleWindow.CloseWindowAfterAdding), Settings.AddOnTopRuleWindow.CloseWindowAfterAdding));
+            e.Handled = true;
+        }
+    }
 
-            chkCloseWindowAfterAdding.IsChecked = closeWindowAfterAdding > 0;
+    private void Window_OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        m_windowPosition.Set();
 
-            lblErrorMessage.Visibility = Visibility.Hidden;
+        m_settings.Write(Settings.AddOnTopRuleWindow.AddOnTopRuleOptions, nameof(Settings.AddOnTopRuleWindow.CloseWindowAfterAdding), chkCloseWindowAfterAdding.IsReallyChecked().ToNumericString());
+    }
+
+    private void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+        string newCopiedFrom = txtCopiedFrom.Text.Trim();
+
+        if (string.IsNullOrEmpty(newCopiedFrom))
+        {
+            lblErrorMessage.Content = ClipTree.Resources.Dialog.NoCopiedFromEntered;
+            lblErrorMessage.Visibility = Visibility.Visible;
 
             txtCopiedFrom.Focus();
         }
-
-        private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
+        else if (m_onTopRules.DoesRuleExist(newCopiedFrom))
         {
-            if (e.ChangedButton == MouseButton.Left)
+            lblErrorMessage.Content = ClipTree.Resources.Dialog.RuleAlreadyExists;
+            lblErrorMessage.Visibility = Visibility.Visible;
+
+            txtCopiedFrom.Focus();
+        }
+        else
+        {
+            string enabled = chkEnabled.IsReallyChecked()
+                ? ClipTree.Resources.Statuses.EnabledYes
+                : ClipTree.Resources.Statuses.EnabledNo;
+
+            m_onTopRules.AddListItem(newCopiedFrom, enabled);
+
+            if (chkCloseWindowAfterAdding.IsReallyChecked())
             {
-                DragMove();
-
-                m_windowPosition.Changed = true;
-            }
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void Window_OnActivated(object sender, EventArgs e)
-        {
-            WindowBorder.Background = Brushes.Gray;
-        }
-
-        private void Window_OnDeactivated(object sender, EventArgs e)
-        {
-            WindowBorder.Background = Brushes.DarkGray;
-        }
-
-        private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (KeyStroke.IsAltKey(Key.Space))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void Window_OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            m_windowPosition.Set();
-
-            m_settings.Write(Settings.AddOnTopRuleWindow.AddOnTopRuleOptions, nameof(Settings.AddOnTopRuleWindow.CloseWindowAfterAdding), chkCloseWindowAfterAdding.IsReallyChecked().ToNumericString());
-        }
-
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            string newCopiedFrom = txtCopiedFrom.Text.Trim();
-
-            if (string.IsNullOrEmpty(newCopiedFrom))
-            {
-                lblErrorMessage.Content = ClipTree.Resources.Dialog.NoCopiedFromEntered;
-                lblErrorMessage.Visibility = Visibility.Visible;
-
-                txtCopiedFrom.Focus();
-            }
-            else if (m_onTopRules.DoesRuleExist(newCopiedFrom))
-            {
-                lblErrorMessage.Content = ClipTree.Resources.Dialog.RuleAlreadyExists;
-                lblErrorMessage.Visibility = Visibility.Visible;
-
-                txtCopiedFrom.Focus();
+                Close();
             }
             else
             {
-                string enabled = chkEnabled.IsReallyChecked()
-                    ? ClipTree.Resources.Statuses.EnabledYes
-                    : ClipTree.Resources.Statuses.EnabledNo;
-
-                m_onTopRules.AddListItem(newCopiedFrom, enabled);
-
-                if (chkCloseWindowAfterAdding.IsReallyChecked())
-                {
-                    Close();
-                }
-                else
-                {
-                    txtCopiedFrom.Text = string.Empty;
-                    chkEnabled.IsChecked = false;
-                    txtCopiedFrom.Focus();
-                }
+                txtCopiedFrom.Text = string.Empty;
+                chkEnabled.IsChecked = false;
+                txtCopiedFrom.Focus();
             }
         }
     }

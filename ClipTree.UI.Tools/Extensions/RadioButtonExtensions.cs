@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace ClipTree.UI.Tools.Extensions
+namespace ClipTree.UI.Tools.Extensions;
+
+public static class RadioButtonExtensions
 {
-    public static class RadioButtonExtensions
+    public static bool IsReallyChecked(this RadioButton radioButton)
     {
-        public static bool IsReallyChecked(this RadioButton radioButton)
-        {
-            return radioButton.IsChecked != null && radioButton.IsChecked.Value;
-        }
+        return radioButton.IsChecked != null && radioButton.IsChecked.Value;
     }
 }

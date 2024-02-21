@@ -1,8 +1,7 @@
 ﻿using System.Windows;
 
-namespace ClipTree
+namespace ClipTree;
+
+public partial class App : Application
 {
-    public partial class App : Application
-    {
-    }
 }

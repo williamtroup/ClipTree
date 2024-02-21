@@ -4,38 +4,37 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace ClipTree.Windows.Display
+namespace ClipTree.Windows.Display;
+
+public partial class MessageInformation : Window
 {
-    public partial class MessageInformation : Window
+    public MessageInformation(string message)
     {
-        public MessageInformation(string message)
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            SetupDisplay(message);
-        }
+        SetupDisplay(message);
+    }
 
-        private void SetupDisplay(string message)
-        {
-            lblMessage.Text = message;
-        }
+    private void SetupDisplay(string message)
+    {
+        lblMessage.Text = message;
+    }
 
-        private void Window_OnActivated(object sender, EventArgs e)
-        {
-            WindowBorder.BorderBrush = Brushes.Gray;
-        }
+    private void Window_OnActivated(object sender, EventArgs e)
+    {
+        WindowBorder.BorderBrush = Brushes.Gray;
+    }
 
-        private void Window_OnDeactivated(object sender, EventArgs e)
-        {
-            WindowBorder.BorderBrush = Brushes.DarkGray;
-        }
+    private void Window_OnDeactivated(object sender, EventArgs e)
+    {
+        WindowBorder.BorderBrush = Brushes.DarkGray;
+    }
 
-        private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
+    private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (KeyStroke.IsAltKey(Key.Space))
         {
-            if (KeyStroke.IsAltKey(Key.Space))
-            {
-                e.Handled = true;
-            }
+            e.Handled = true;
         }
     }
 }

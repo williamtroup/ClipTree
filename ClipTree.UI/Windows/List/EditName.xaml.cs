@@ -10,114 +10,113 @@ using ClipTree.UI.Tools.Views;
 using ClipTree.UI.Tools.Interfaces;
 using ClipTree.UI.Tools.Actions;
 
-namespace ClipTree.Windows.List
+namespace ClipTree.Windows.List;
+
+public partial class EditName : Window
 {
-    public partial class EditName : Window
+    private readonly IClipboardHistory m_clipboardHistory;
+    private readonly IClipboardHistoryItems m_clipboardHistoryItems;
+    private readonly int m_selectedIndex;
+    private readonly WindowPosition m_windowPosition;
+
+    public EditName(IXMLSettings settings, IClipboardHistory clipboardHistory, IClipboardHistoryItems clipboardHistoryItems, int selectedIndex)
     {
-        private readonly IClipboardHistory m_clipboardHistory;
-        private readonly IClipboardHistoryItems m_clipboardHistoryItems;
-        private readonly int m_selectedIndex;
-        private readonly WindowPosition m_windowPosition;
+        InitializeComponent();
 
-        public EditName(IXMLSettings settings, IClipboardHistory clipboardHistory, IClipboardHistoryItems clipboardHistoryItems, int selectedIndex)
+        clipboardHistory.StopTracking();
+
+        m_clipboardHistory = clipboardHistory;
+        m_clipboardHistoryItems = clipboardHistoryItems;
+        m_selectedIndex = selectedIndex;
+        m_windowPosition = new WindowPosition(this, settings, Width, Height, GetName);
+
+        SetupDisplay();
+
+        BackgroundAction.Run(() => m_windowPosition.Get());
+    }
+
+    public static string GetName
+    {
+        get
         {
-            InitializeComponent();
-
-            clipboardHistory.StopTracking();
-
-            m_clipboardHistory = clipboardHistory;
-            m_clipboardHistoryItems = clipboardHistoryItems;
-            m_selectedIndex = selectedIndex;
-            m_windowPosition = new WindowPosition(this, settings, Width, Height, GetName);
-
-            SetupDisplay();
-
-            BackgroundAction.Run(() => m_windowPosition.Get());
+            return string.Format(Settings.WindowNameFormat, nameof(EditName), Settings.Window);
         }
+    }
 
-        public static string GetName
+    private void SetupDisplay()
+    {
+        lblErrorMessage.Visibility = Visibility.Hidden;
+
+        txtName.Focus();
+        txtName.Text = m_clipboardHistory.Items[m_selectedIndex].Name;
+        txtName.SelectionStart = txtName.Text.Length;
+        txtName.SelectAll();
+    }
+
+    private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left)
         {
-            get
-            {
-                return string.Format(Settings.WindowNameFormat, nameof(EditName), Settings.Window);
-            }
+            DragMove();
+
+            m_windowPosition.Changed = true;
         }
+    }
 
-        private void SetupDisplay()
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void Window_OnActivated(object sender, EventArgs e)
+    {
+        WindowBorder.Background = Brushes.Gray;
+    }
+
+    private void Window_OnDeactivated(object sender, EventArgs e)
+    {
+        WindowBorder.Background = Brushes.DarkGray;
+    }
+
+    private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (KeyStroke.IsAltKey(Key.Space))
         {
-            lblErrorMessage.Visibility = Visibility.Hidden;
+            e.Handled = true;
+        }
+    }
+
+    private void Window_OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        m_windowPosition.Set();
+        m_clipboardHistory.StartTracking();
+    }
+
+    private void UpdateButton_Click(object sender, RoutedEventArgs e)
+    {
+        string newName = txtName.Text.Trim();
+
+        ClipboardHistoryItem clipboardHistoryItem = m_clipboardHistory.Items[m_selectedIndex];
+        bool hasItemChanged = newName != clipboardHistoryItem.Name;
+
+        if (m_clipboardHistory.DoesNameExist(newName) && hasItemChanged)
+        {
+            lblErrorMessage.Content = ClipTree.Resources.Dialog.NameAlreadyExists;
+            lblErrorMessage.Visibility = Visibility.Visible;
 
             txtName.Focus();
-            txtName.Text = m_clipboardHistory.Items[m_selectedIndex].Name;
-            txtName.SelectionStart = txtName.Text.Length;
-            txtName.SelectAll();
         }
-
-        private void Title_OnMouseDown(object sender, MouseButtonEventArgs e)
+        else
         {
-            if (e.ChangedButton == MouseButton.Left)
+            if (hasItemChanged)
             {
-                DragMove();
+                clipboardHistoryItem.Name = newName;
 
-                m_windowPosition.Changed = true;
+                m_clipboardHistory.Items[m_selectedIndex] = clipboardHistoryItem;
+                m_clipboardHistoryItems.UpdateItemName(clipboardHistoryItem, m_selectedIndex);
             }
-        }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
             Close();
-        }
-
-        private void Window_OnActivated(object sender, EventArgs e)
-        {
-            WindowBorder.Background = Brushes.Gray;
-        }
-
-        private void Window_OnDeactivated(object sender, EventArgs e)
-        {
-            WindowBorder.Background = Brushes.DarkGray;
-        }
-
-        private void Window_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (KeyStroke.IsAltKey(Key.Space))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void Window_OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            m_windowPosition.Set();
-            m_clipboardHistory.StartTracking();
-        }
-
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-            string newName = txtName.Text.Trim();
-
-            ClipboardHistoryItem clipboardHistoryItem = m_clipboardHistory.Items[m_selectedIndex];
-            bool hasItemChanged = newName != clipboardHistoryItem.Name;
-
-            if (m_clipboardHistory.DoesNameExist(newName) && hasItemChanged)
-            {
-                lblErrorMessage.Content = ClipTree.Resources.Dialog.NameAlreadyExists;
-                lblErrorMessage.Visibility = Visibility.Visible;
-
-                txtName.Focus();
-            }
-            else
-            {
-                if (hasItemChanged)
-                {
-                    clipboardHistoryItem.Name = newName;
-
-                    m_clipboardHistory.Items[m_selectedIndex] = clipboardHistoryItem;
-                    m_clipboardHistoryItems.UpdateItemName(clipboardHistoryItem, m_selectedIndex);
-                }
-
-                Close();
-            }
         }
     }
 }

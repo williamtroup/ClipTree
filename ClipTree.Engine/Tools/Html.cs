@@ -3,96 +3,95 @@ using System.IO;
 using ClipTree.Engine.Clipboard;
 using ClipTree.Engine.Windows;
 
-namespace ClipTree.Engine.Tools
+namespace ClipTree.Engine.Tools;
+
+public static class Html
 {
-    public static class Html
+    private const string PreviewClipStorageFolder = "ClipPreviews";
+    private const string PreviewLookTag1 = "<html>";
+    private const string PreviewLookTag2 = "<head>";
+    private const string PriviewTitle = "<html><title>\"{0}\" Clip</title>";
+
+    public static bool View(ClipboardHistoryItem clipboardHistoryItem)
     {
-        private const string PreviewClipStorageFolder = "ClipPreviews";
-        private const string PreviewLookTag1 = "<html>";
-        private const string PreviewLookTag2 = "<head>";
-        private const string PriviewTitle = "<html><title>\"{0}\" Clip</title>";
+        bool loaded = false;
 
-        public static bool View(ClipboardHistoryItem clipboardHistoryItem)
+        string html = StripHeader(clipboardHistoryItem);
+        if (!string.IsNullOrEmpty(html))
         {
-            bool loaded = false;
+            SetupStorageFolder();
 
-            string html = StripHeader(clipboardHistoryItem);
-            if (!string.IsNullOrEmpty(html))
-            {
-                SetupStorageFolder();
+            string filename = GetNewFilename();
 
-                string filename = GetNewFilename();
+            File.WriteAllText(filename, html);
 
-                File.WriteAllText(filename, html);
-
-                loaded = Processes.Start(filename);
-            }
-
-            return loaded;
+            loaded = Processes.Start(filename);
         }
 
-        public static string StripHeader(ClipboardHistoryItem clipboardHistoryItem)
+        return loaded;
+    }
+
+    public static string StripHeader(ClipboardHistoryItem clipboardHistoryItem)
+    {
+        string returnHtml = null;
+        string html = clipboardHistoryItem.Text;
+        string htmlTitle = string.Format(PriviewTitle, clipboardHistoryItem.Name);
+
+        int startHTMLIndex = html.IndexOf(PreviewLookTag1, StringComparison.CurrentCultureIgnoreCase);
+        int startLength = PreviewLookTag1.Length;
+
+        if (startHTMLIndex <= -1)
         {
-            string returnHtml = null;
-            string html = clipboardHistoryItem.Text;
-            string htmlTitle = string.Format(PriviewTitle, clipboardHistoryItem.Name);
-
-            int startHTMLIndex = html.IndexOf(PreviewLookTag1, StringComparison.CurrentCultureIgnoreCase);
-            int startLength = PreviewLookTag1.Length;
-
-            if (startHTMLIndex <= -1)
-            {
-                startHTMLIndex = html.IndexOf(PreviewLookTag2, StringComparison.CurrentCultureIgnoreCase);
-                startLength = PreviewLookTag2.Length;
-            }
-
-            if (startHTMLIndex > -1)
-            {
-                int startIndex = startHTMLIndex + startLength;
-
-                returnHtml = html.Substring(startIndex, html.Length - startIndex);
-                returnHtml = string.Format("{0}{1}", htmlTitle, returnHtml);
-            }
-
-            return returnHtml;
+            startHTMLIndex = html.IndexOf(PreviewLookTag2, StringComparison.CurrentCultureIgnoreCase);
+            startLength = PreviewLookTag2.Length;
         }
 
-        private static string GetNewFilename()
+        if (startHTMLIndex > -1)
         {
-            DateTime dateTime = DateTime.Now;
+            int startIndex = startHTMLIndex + startLength;
 
-            string filename = string.Format(
-                "clip_{0}-{1}-{2}_{3}-{4}-{5}.html",
-                dateTime.Day,
-                dateTime.Month,
-                dateTime.Year,
-                dateTime.Hour,
-                dateTime.Minute,
-                dateTime.Second);
-
-            return Path.Combine(PreviewClipStorageFolder, filename);
+            returnHtml = html.Substring(startIndex, html.Length - startIndex);
+            returnHtml = string.Format("{0}{1}", htmlTitle, returnHtml);
         }
 
-        private static void SetupStorageFolder()
-        {
-            if (Directory.Exists(PreviewClipStorageFolder))
-            {
-                string[] files = Directory.GetFiles(PreviewClipStorageFolder);
+        return returnHtml;
+    }
 
-                foreach (string file in files)
+    private static string GetNewFilename()
+    {
+        DateTime dateTime = DateTime.Now;
+
+        string filename = string.Format(
+            "clip_{0}-{1}-{2}_{3}-{4}-{5}.html",
+            dateTime.Day,
+            dateTime.Month,
+            dateTime.Year,
+            dateTime.Hour,
+            dateTime.Minute,
+            dateTime.Second);
+
+        return Path.Combine(PreviewClipStorageFolder, filename);
+    }
+
+    private static void SetupStorageFolder()
+    {
+        if (Directory.Exists(PreviewClipStorageFolder))
+        {
+            string[] files = Directory.GetFiles(PreviewClipStorageFolder);
+
+            foreach (string file in files)
+            {
+                FileInfo fileInfo = new FileInfo(file);
+
+                if (fileInfo.LastWriteTime < DateTime.Now.AddDays(-1))
                 {
-                    FileInfo fileInfo = new FileInfo(file);
-
-                    if (fileInfo.LastWriteTime < DateTime.Now.AddDays(-1))
-                    {
-                        fileInfo.Delete();
-                    }
+                    fileInfo.Delete();
                 }
             }
-            else
-            {
-                Directory.CreateDirectory(PreviewClipStorageFolder);
-            }
+        }
+        else
+        {
+            Directory.CreateDirectory(PreviewClipStorageFolder);
         }
     }
 }

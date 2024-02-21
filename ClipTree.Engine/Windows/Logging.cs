@@ -1,15 +1,14 @@
 ﻿using log4net;
 
-namespace ClipTree.Engine.Windows
+namespace ClipTree.Engine.Windows;
+
+public abstract class Logging
 {
-    public abstract class Logging
+    protected ILog Log
     {
-        protected ILog Log
+        get
         {
-            get
-            {
-                return LogManager.GetLogger(GetType());
-            }
+            return LogManager.GetLogger(GetType());
         }
     }
 }
