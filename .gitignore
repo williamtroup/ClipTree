@@ -13,3 +13,6 @@
 /ClipTree.UI.Tools/bin/Debug
 /ClipTree.UI.Tools/obj/Debug
 /packages
+/ClipTree.Engine/obj
+/ClipTree.UI/obj
+/ClipTree.UI.Tools/obj
