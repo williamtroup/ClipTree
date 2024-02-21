@@ -4,11 +4,5 @@ namespace ClipTree.Engine.Windows;
 
 public abstract class Logging
 {
-    protected ILog Log
-    {
-        get
-        {
-            return LogManager.GetLogger(GetType());
-        }
-    }
+    protected ILog Log => LogManager.GetLogger(GetType());
 }

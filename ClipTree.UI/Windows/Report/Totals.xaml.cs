@@ -27,13 +27,7 @@ public partial class Totals : Window
         BackgroundAction.Run(() => m_windowPosition.Get());
     }
 
-    public static string GetName
-    {
-        get
-        {
-            return string.Format(Settings.WindowNameFormat, nameof(Totals), Settings.Window);
-        }
-    }
+    public static string GetName => string.Format(Settings.WindowNameFormat, nameof(Totals), Settings.Window);
 
     private void SetupDisplay(Dictionary<TextDataFormat, int> totals)
     {

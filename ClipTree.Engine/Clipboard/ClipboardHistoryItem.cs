@@ -12,11 +12,5 @@ public struct ClipboardHistoryItem
     public string Locked;
     public string DateTime;
 
-    public bool IsTextBased
-    {
-        get
-        {
-            return Type == TextDataFormat.Text || Type == TextDataFormat.UnicodeText;
-        }
-    }
+    public readonly bool IsTextBased => Type is TextDataFormat.Text or TextDataFormat.UnicodeText;
 }

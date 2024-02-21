@@ -11,28 +11,13 @@ using System.Windows.Documents;
 
 namespace ClipTree.UI.Tools.Views;
 
-public class FilenameDialog
+public class FilenameDialog(
+    IClipboardHistory clipboardHistory,
+    IClipboardHistoryItems clipboardHistoryItems,
+    string htmlFilesFilter,
+    string richTextFilesFilter,
+    string textFilesFilter)
 {
-    private readonly IClipboardHistory m_clipboardHistory;
-    private readonly IClipboardHistoryItems m_clipboardHistoryItems;
-    private readonly string m_htmlFilesFilter;
-    private readonly string m_richTextFilesFilter;
-    private readonly string m_textFilesFilter;
-
-    public FilenameDialog(
-        IClipboardHistory clipboardHistory, 
-        IClipboardHistoryItems clipboardHistoryItems, 
-        string htmlFilesFilter, 
-        string richTextFilesFilter, 
-        string textFilesFilter)
-    {
-        m_clipboardHistory = clipboardHistory;
-        m_clipboardHistoryItems = clipboardHistoryItems;
-        m_htmlFilesFilter = htmlFilesFilter;
-        m_richTextFilesFilter = richTextFilesFilter;
-        m_textFilesFilter = textFilesFilter;
-    }
-
     public void Open(string filter, string title)
     {
         OpenFileDialog openFileDialog = new OpenFileDialog
@@ -44,9 +29,9 @@ public class FilenameDialog
         bool? result = openFileDialog.ShowDialog();
         if (result != null && result.Value)
         {
-            m_clipboardHistoryItems.Load(new XMLSettings(openFileDialog.FileName));
+            clipboardHistoryItems.Load(new XMLSettings(openFileDialog.FileName));
 
-            m_clipboardHistory.SetTopItemAsCurrent();
+            clipboardHistory.SetTopItemAsCurrent();
         }
     }
 
@@ -66,32 +51,32 @@ public class FilenameDialog
                 File.Delete(saveFileDialog.FileName);
             }
 
-            m_clipboardHistoryItems.Save(new XMLSettings(saveFileDialog.FileName));
+            clipboardHistoryItems.Save(new XMLSettings(saveFileDialog.FileName));
         }
     }
 
     public void SaveItem(string title)
     {
-        int selectedIndex = m_clipboardHistoryItems.GetSelectedIndex();
+        int selectedIndex = clipboardHistoryItems.GetSelectedIndex();
         if (selectedIndex > -1)
         {
-            ClipboardHistoryItem clipboardHistoryItem = m_clipboardHistory.Items[selectedIndex];
+            ClipboardHistoryItem clipboardHistoryItem = clipboardHistory.Items[selectedIndex];
             string data = null;
 
             string filter;
             switch (clipboardHistoryItem.Type)
             {
                 case TextDataFormat.Html:
-                    filter = m_htmlFilesFilter;
+                    filter = htmlFilesFilter;
                     data = Html.StripHeader(clipboardHistoryItem);
                     break;
 
                 case TextDataFormat.Rtf:
-                    filter = m_richTextFilesFilter;
+                    filter = richTextFilesFilter;
                     break;
 
                 default:
-                    filter = m_textFilesFilter;
+                    filter = textFilesFilter;
                     data = clipboardHistoryItem.Text;
                     break;
             }

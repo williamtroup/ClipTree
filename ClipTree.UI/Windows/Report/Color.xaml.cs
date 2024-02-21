@@ -27,13 +27,7 @@ public partial class Color : Window
         BackgroundAction.Run(() => m_windowPosition.Get());
     }
 
-    public static string GetName
-    {
-        get
-        {
-            return string.Format(Settings.WindowNameFormat, nameof(Color), Settings.Window);
-        }
-    }
+    public static string GetName => string.Format(Settings.WindowNameFormat, nameof(Color), Settings.Window);
 
     private void SetupDisplay(string hexColor)
     {

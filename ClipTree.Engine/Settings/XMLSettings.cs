@@ -5,37 +5,26 @@ using ClipTree.Engine.Settings.Interfaces;
 
 namespace ClipTree.Engine.Settings;
 
-public class XMLSettings : IXMLSettings
+public class XMLSettings(string filename = "settings.xml", string root = "Configuration", string entryName = "Setting")
+    : IXMLSettings
 {
     private const string EntryName = "Name";
     private const string EntryValue = "Value";
     private const string EntryFormat = "/{0}/{1}/{2}[@{3}=\"{4}\"]";
-
-    private readonly string m_filename;
-    private readonly string m_root;
-    private readonly string m_entryName;
-
-    public XMLSettings(string filename = "settings.xml", string root = "Configuration", string entryName = "Setting")
-    {
-        m_filename = filename;
-        m_root = root;
-        m_entryName = entryName;
-
-    }
 
     public XmlDocument GetDocument()
     {
         Create();
 
         XmlDocument xmlDocument = new XmlDocument();
-        xmlDocument.Load(m_filename);
+        xmlDocument.Load(filename);
 
         return xmlDocument;
     }
 
     public void SaveDocument(XmlDocument xmlDocument)
     {
-        xmlDocument.Save(m_filename);
+        xmlDocument.Save(filename);
     }
 
     public string Read(string section, string setting, string defaultValue, XmlDocument xmlOverrideDocument = null)
@@ -46,7 +35,7 @@ public class XMLSettings : IXMLSettings
 
         if (xmlDocument.DocumentElement != null)
         {
-            XmlNode xmlNode = xmlDocument.DocumentElement.SelectSingleNode(string.Format(EntryFormat, m_root, section, m_entryName, EntryName, setting));
+            XmlNode xmlNode = xmlDocument.DocumentElement.SelectSingleNode(string.Format(EntryFormat, root, section, entryName, EntryName, setting));
 			
             if (xmlNode != null && xmlNode.Attributes != null)
             {
@@ -68,7 +57,7 @@ public class XMLSettings : IXMLSettings
 
         if (xmlDocument.DocumentElement != null)
         {
-            XmlElement xmlNode = (XmlElement)(xmlDocument.DocumentElement.SelectSingleNode(string.Format(EntryFormat, m_root, section, m_entryName, EntryName, setting)));
+            XmlElement xmlNode = (XmlElement)(xmlDocument.DocumentElement.SelectSingleNode(string.Format(EntryFormat, root, section, entryName, EntryName, setting)));
 
             if (xmlNode != null)
             {
@@ -76,13 +65,13 @@ public class XMLSettings : IXMLSettings
             }
             else
             {
-                xmlNode = xmlDocument.CreateElement(m_entryName);
+                xmlNode = xmlDocument.CreateElement(entryName);
                 xmlNode.SetAttribute(EntryValue, value);
                 xmlNode.SetAttribute(EntryName, setting);
 
                 if (xmlDocument.DocumentElement != null)
                 {
-                    XmlNode xmlNodeRoot = xmlDocument.DocumentElement.SelectSingleNode(string.Format("/{0}/{1}", m_root, section));
+                    XmlNode xmlNodeRoot = xmlDocument.DocumentElement.SelectSingleNode(string.Format("/{0}/{1}", root, section));
 
                     if (xmlNodeRoot != null)
                     {
@@ -90,7 +79,7 @@ public class XMLSettings : IXMLSettings
                     }
                     else
                     {
-                        xmlNodeRoot = xmlDocument.DocumentElement.SelectSingleNode(string.Format("/{0}", m_root));
+                        xmlNodeRoot = xmlDocument.DocumentElement.SelectSingleNode(string.Format("/{0}", root));
                         if (xmlNodeRoot != null)
                         {
                             xmlNodeRoot.AppendChild(xmlDocument.CreateElement(section));
@@ -98,7 +87,7 @@ public class XMLSettings : IXMLSettings
 
                         if (xmlDocument.DocumentElement != null)
                         {
-                            xmlNodeRoot = xmlDocument.DocumentElement.SelectSingleNode(string.Format("/{0}/{1}", m_root, section));
+                            xmlNodeRoot = xmlDocument.DocumentElement.SelectSingleNode(string.Format("/{0}/{1}", root, section));
                             if (xmlNodeRoot != null)
                             {
                                 xmlNodeRoot.AppendChild(xmlNode);
@@ -111,7 +100,7 @@ public class XMLSettings : IXMLSettings
 
         if (xmlOverrideDocument == null)
         {
-            xmlDocument.Save(m_filename);
+            xmlDocument.Save(filename);
         }
     }
 
@@ -123,7 +112,7 @@ public class XMLSettings : IXMLSettings
 
         if (xmlDocument.DocumentElement != null)
         {
-            XmlNode xmlNode = xmlDocument.DocumentElement.SelectSingleNode(string.Format("/{0}/{1}", m_root, section));
+            XmlNode xmlNode = xmlDocument.DocumentElement.SelectSingleNode(string.Format("/{0}/{1}", root, section));
 
             if (xmlNode != null)
             {
@@ -133,7 +122,7 @@ public class XMLSettings : IXMLSettings
 
                 if (xmlOverrideDocument == null)
                 {
-                    xmlDocument.Save(m_filename);
+                    xmlDocument.Save(filename);
                 }
 
                 done = true;
@@ -151,7 +140,7 @@ public class XMLSettings : IXMLSettings
 
         if (xmlDocument.DocumentElement != null)
         {
-            XmlNodeList xmlNodeList = xmlDocument.DocumentElement.SelectNodes(string.Format("/{0}/{1}/{2}", m_root, section, m_entryName));
+            XmlNodeList xmlNodeList = xmlDocument.DocumentElement.SelectNodes(string.Format("/{0}/{1}/{2}", root, section, entryName));
             if (xmlNodeList != null)
             {
                 foreach (XmlNode xmlNode in xmlNodeList)
@@ -178,7 +167,7 @@ public class XMLSettings : IXMLSettings
         {
             Create();
 
-            xmlDocument.Load(m_filename);
+            xmlDocument.Load(filename);
         }
 
         return xmlDocument;
@@ -186,13 +175,13 @@ public class XMLSettings : IXMLSettings
 
     private void Create()
     {
-        if (!File.Exists(m_filename))
+        if (!File.Exists(filename))
         {
-            using (StreamWriter fileStreamWriter = new StreamWriter(File.Open(m_filename, FileMode.Create)))
+            using (StreamWriter fileStreamWriter = new StreamWriter(File.Open(filename, FileMode.Create)))
             {
                 fileStreamWriter.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                fileStreamWriter.WriteLine("<{0}>", m_root);
-                fileStreamWriter.WriteLine("</{0}>", m_root);
+                fileStreamWriter.WriteLine("<{0}>", root);
+                fileStreamWriter.WriteLine("</{0}>", root);
                 fileStreamWriter.Close();
             }
         }

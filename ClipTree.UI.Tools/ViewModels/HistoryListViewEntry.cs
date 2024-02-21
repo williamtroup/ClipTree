@@ -20,12 +20,10 @@ public class HistoryListViewEntry
 
     public string TextDisplay
     {
-        get { return m_textDisplay; }
-        set
-        {
+        get => m_textDisplay;
+        set =>
             m_textDisplay = value.Length > MaximumTextDisplayLength
                 ? string.Format("{0}{1}", value.Substring(0, MaximumTextDisplayLength), Ellipsis)
                 : value;
-        }
     }
 }

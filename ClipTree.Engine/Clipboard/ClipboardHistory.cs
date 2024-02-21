@@ -12,13 +12,10 @@ using ClipTree.Engine.Api;
 
 namespace ClipTree.Engine.Clipboard;
 
-public class ClipboardHistory : Logging, IClipboardHistory
+public class ClipboardHistory(string defaultName, string defaultProcessName, string enabledYes, string enabledNo)
+    : Logging, IClipboardHistory
 {
-    private readonly string m_defaultName;
-    private readonly string m_defaultProcessName;
-    private readonly string m_enabledYes;
-    private readonly string m_enabledNo;
-    private readonly SynchronizationContext m_synchronizationContext;
+    private readonly SynchronizationContext m_synchronizationContext = SynchronizationContext.Current;
 
     private bool m_running;
     private bool m_firstPassWhenRunning = true;
@@ -30,20 +27,6 @@ public class ClipboardHistory : Logging, IClipboardHistory
     public event ItemsInsertedHandler OnItemInserted;
     public event AllItemsUpdatedHandler OnAllItemsUpdated;
     public event ItemUpdatedHandler OnItemUpdated;
-
-    public ClipboardHistory(string defaultName, string defaultProcessName, string enabledYes, string enabledNo)
-    {
-        m_defaultName = defaultName;
-        m_defaultProcessName = defaultProcessName;
-        m_enabledYes = enabledYes;
-        m_enabledNo = enabledNo;
-        m_synchronizationContext = SynchronizationContext.Current;
-
-        Items = new List<ClipboardHistoryItem>();
-        CopiedFromFilters = new Dictionary<string, string>();
-        LastItemFiltered = string.Empty;
-        EngineRunning = true;
-    }
 
     public void StartTracking()
     {
@@ -73,7 +56,7 @@ public class ClipboardHistory : Logging, IClipboardHistory
         {
             ClipboardHistoryItem clipboardTextItem = Items[index];
 
-            if (clipboardTextItem.Locked != m_enabledYes)
+            if (clipboardTextItem.Locked != enabledYes)
             {
                 if (index == 0)
                 {
@@ -100,7 +83,7 @@ public class ClipboardHistory : Logging, IClipboardHistory
         {
             ClipboardHistoryItem clipboardTextItem = Items[listItemIndex];
 
-            if (clipboardTextItem.Type == type && clipboardTextItem.Locked != m_enabledYes)
+            if (clipboardTextItem.Type == type && clipboardTextItem.Locked != enabledYes)
             {
                 OnItemRemoved?.Invoke(this, new ItemRemovedEventArgs(listItemIndex));
 
@@ -127,7 +110,7 @@ public class ClipboardHistory : Logging, IClipboardHistory
         {
             ClipboardHistoryItem clipboardTextItem = Items[listItemIndex];
 
-            if (string.Equals(clipboardTextItem.CopiedFrom, copiedFrom, StringComparison.CurrentCultureIgnoreCase) && clipboardTextItem.Locked != m_enabledYes)
+            if (string.Equals(clipboardTextItem.CopiedFrom, copiedFrom, StringComparison.CurrentCultureIgnoreCase) && clipboardTextItem.Locked != enabledYes)
             {
                 OnItemRemoved?.Invoke(this, new ItemRemovedEventArgs(listItemIndex));
 
@@ -154,7 +137,7 @@ public class ClipboardHistory : Logging, IClipboardHistory
         {
             ClipboardHistoryItem clipboardTextItem = Items[listItemIndex];
 
-            if (clipboardTextItem.Locked != m_enabledYes)
+            if (clipboardTextItem.Locked != enabledYes)
             {
                 Items.RemoveAt(listItemIndex);
 
@@ -274,7 +257,7 @@ public class ClipboardHistory : Logging, IClipboardHistory
 
     public void Lock(IEnumerable<int> indexes, bool locked)
     {
-        string status = locked ? m_enabledYes : m_enabledNo;
+        string status = locked ? enabledYes : enabledNo;
 
         foreach (int index in indexes)
         {
@@ -288,12 +271,12 @@ public class ClipboardHistory : Logging, IClipboardHistory
     }
 
     public bool DisableAllClipboardCopying { get; set; }
-    public List<ClipboardHistoryItem> Items { get; }
+    public List<ClipboardHistoryItem> Items { get; } = new();
     public bool EnableCopiedFromFiltering { get; set; }
-    public Dictionary<string, string> CopiedFromFilters { get; set; }
-    public string LastItemFiltered { get; set; }
+    public Dictionary<string, string> CopiedFromFilters { get; set; } = new();
+    public string LastItemFiltered { get; set; } = string.Empty;
     public int UpdateInterval { get; set; }
-    public bool EngineRunning { get; set; }
+    public bool EngineRunning { get; set; } = true;
     public bool AutoTrimTextAndUnicodeEntries { get; set; }
 
     private void PopulateHistoryThread()
@@ -338,12 +321,12 @@ public class ClipboardHistory : Logging, IClipboardHistory
                     {
                         ClipboardHistoryItem newClipboardTextItem = new ClipboardHistoryItem
                         {
-                            Name = m_defaultName,
+                            Name = defaultName,
                             Type = type,
                             Text = currentText,
                             TextDisplay = currentText,
                             CopiedFrom = processName,
-                            Locked = m_enabledNo,
+                            Locked = enabledNo,
                             DateTime = GetDateTimeStamp()
                         };
 
@@ -423,7 +406,7 @@ public class ClipboardHistory : Logging, IClipboardHistory
                     }
                     else
                     {
-                        if (AutoTrimTextAndUnicodeEntries && (type == TextDataFormat.Text || type == TextDataFormat.UnicodeText))
+                        if (AutoTrimTextAndUnicodeEntries && type is TextDataFormat.Text or TextDataFormat.UnicodeText)
                         {
                             data = data.Trim();
                         }
@@ -460,7 +443,7 @@ public class ClipboardHistory : Logging, IClipboardHistory
 
     private bool GetCurrentProcessName(out string currentProcessName)
     {
-        string processName = m_overrideDefaultCopiedFrom ?? m_defaultProcessName;
+        string processName = m_overrideDefaultCopiedFrom ?? defaultProcessName;
 
         if (!m_firstPassWhenRunning && string.IsNullOrEmpty(m_overrideDefaultCopiedFrom))
         {
@@ -494,7 +477,7 @@ public class ClipboardHistory : Logging, IClipboardHistory
 
     private bool IsProcessNameFilteredInCopiedFromFilters(string processName)
     {
-        return EnableCopiedFromFiltering && CopiedFromFilters.ContainsKey(processName) && CopiedFromFilters[processName] == m_enabledYes;
+        return EnableCopiedFromFiltering && CopiedFromFilters.ContainsKey(processName) && CopiedFromFilters[processName] == enabledYes;
     }
 
     private int GetTextItemIndex(string text)

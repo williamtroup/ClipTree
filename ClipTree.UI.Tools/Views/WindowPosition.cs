@@ -6,59 +6,44 @@ using System.Xml;
 
 namespace ClipTree.UI.Tools.Views;
 
-public class WindowPosition
+public class WindowPosition(
+    Window window,
+    IXMLSettings settings,
+    double defaultWidth,
+    double defaultHeight,
+    string sectionName = "Window")
 {
-    private readonly Window m_window;
-    private readonly IXMLSettings m_settings;
-    private readonly double m_defaultWidth;
-    private readonly double m_defaultHeight;
-    private readonly string m_sectionName;
-
-    public WindowPosition(
-        Window window,
-        IXMLSettings settings,
-        double defaultWidth,
-        double defaultHeight,
-        string sectionName = "Window")
-    {
-        m_window = window;
-        m_settings = settings;
-        m_defaultWidth = defaultWidth;
-        m_defaultHeight = defaultHeight;
-        m_sectionName = sectionName;
-    }
-
     public void Get(bool ignoreWindowResizeMode = false)
     {
-        XmlDocument xmlDocument = m_settings.GetDocument();
+        XmlDocument xmlDocument = settings.GetDocument();
 
-        double x = Convert.ToDouble(m_settings.Read(m_sectionName, "X", "0", xmlDocument));
-        double y = Convert.ToDouble(m_settings.Read(m_sectionName, "Y", "0", xmlDocument));
-        int minimized = Convert.ToInt32(m_settings.Read(m_sectionName, "Minimized", "0", xmlDocument));
-        int maximized = Convert.ToInt32(m_settings.Read(m_sectionName, "Maximized", "0", xmlDocument));
-        int hidden = Convert.ToInt32(m_settings.Read(m_sectionName, "Hidden", "0", xmlDocument));
-        int saved = Convert.ToInt32(m_settings.Read(m_sectionName, "Saved", "0", xmlDocument));
+        double x = Convert.ToDouble(settings.Read(sectionName, "X", "0", xmlDocument));
+        double y = Convert.ToDouble(settings.Read(sectionName, "Y", "0", xmlDocument));
+        int minimized = Convert.ToInt32(settings.Read(sectionName, "Minimized", "0", xmlDocument));
+        int maximized = Convert.ToInt32(settings.Read(sectionName, "Maximized", "0", xmlDocument));
+        int hidden = Convert.ToInt32(settings.Read(sectionName, "Hidden", "0", xmlDocument));
+        int saved = Convert.ToInt32(settings.Read(sectionName, "Saved", "0", xmlDocument));
 
         if (saved > 0)
         {
-            double width = Convert.ToDouble(m_settings.Read(m_sectionName, "Width", m_defaultWidth.ToString(CultureInfo.InvariantCulture), xmlDocument));
-            double height = Convert.ToDouble(m_settings.Read(m_sectionName, "Height", m_defaultHeight.ToString(CultureInfo.InvariantCulture), xmlDocument));
+            double width = Convert.ToDouble(settings.Read(sectionName, "Width", defaultWidth.ToString(CultureInfo.InvariantCulture), xmlDocument));
+            double height = Convert.ToDouble(settings.Read(sectionName, "Height", defaultHeight.ToString(CultureInfo.InvariantCulture), xmlDocument));
 
             if (minimized > 0 || maximized > 0)
             {
-                m_window.Left = x;
-                m_window.Top = y;
-                m_window.Width = width;
-                m_window.Height = height;
+                window.Left = x;
+                window.Top = y;
+                window.Width = width;
+                window.Height = height;
             }
 
             if (minimized > 0)
             {
-                m_window.WindowState = WindowState.Minimized;
+                window.WindowState = WindowState.Minimized;
             }
             else if (maximized > 0)
             {
-                m_window.WindowState = WindowState.Maximized;
+                window.WindowState = WindowState.Maximized;
             }
             else
             {
@@ -66,24 +51,24 @@ public class WindowPosition
                 {
                     if (width > 0 && height > 0)
                     {
-                        m_window.WindowStartupLocation = WindowStartupLocation.Manual;
-                        m_window.Left = x;
-                        m_window.Top = y;
-                        m_window.Width = width;
-                        m_window.Height = height;
+                        window.WindowStartupLocation = WindowStartupLocation.Manual;
+                        window.Left = x;
+                        window.Top = y;
+                        window.Width = width;
+                        window.Height = height;
                     }
                 }
                 else
                 {
-                    m_window.WindowStartupLocation = WindowStartupLocation.Manual;
-                    m_window.Left = x;
-                    m_window.Top = y;
+                    window.WindowStartupLocation = WindowStartupLocation.Manual;
+                    window.Left = x;
+                    window.Top = y;
                 }
             }
 
             if (hidden > 0)
             {
-                m_window.Hide();
+                window.Hide();
             }
         }
     }
@@ -92,35 +77,29 @@ public class WindowPosition
     {
         if (Changed)
         {
-            bool minimized = m_window.WindowState == WindowState.Minimized;
-            bool maximized = m_window.WindowState == WindowState.Maximized;
+            bool minimized = window.WindowState == WindowState.Minimized;
+            bool maximized = window.WindowState == WindowState.Maximized;
 
-            XmlDocument xmlDocument = m_settings.GetDocument();
+            XmlDocument xmlDocument = settings.GetDocument();
 
-            m_settings.Write(m_sectionName, "X", m_window.Left.ToString(CultureInfo.InvariantCulture), xmlDocument);
-            m_settings.Write(m_sectionName, "Y", m_window.Top.ToString(CultureInfo.InvariantCulture), xmlDocument);
-            m_settings.Write(m_sectionName, "Minimized", minimized ? "1" : "0", xmlDocument);
-            m_settings.Write(m_sectionName, "Maximized", maximized ? "1" : "0", xmlDocument);
-            m_settings.Write(m_sectionName, "Hidden", (!m_window.IsVisible) ? "1" : "0", xmlDocument);
-            m_settings.Write(m_sectionName, "Saved", "1", xmlDocument);
+            settings.Write(sectionName, "X", window.Left.ToString(CultureInfo.InvariantCulture), xmlDocument);
+            settings.Write(sectionName, "Y", window.Top.ToString(CultureInfo.InvariantCulture), xmlDocument);
+            settings.Write(sectionName, "Minimized", minimized ? "1" : "0", xmlDocument);
+            settings.Write(sectionName, "Maximized", maximized ? "1" : "0", xmlDocument);
+            settings.Write(sectionName, "Hidden", (!window.IsVisible) ? "1" : "0", xmlDocument);
+            settings.Write(sectionName, "Saved", "1", xmlDocument);
 
             if (IsResizeable && !minimized && !maximized)
             {
-                m_settings.Write(m_sectionName, "Width", m_window.Width.ToString(CultureInfo.InvariantCulture), xmlDocument);
-                m_settings.Write(m_sectionName, "Height", m_window.Height.ToString(CultureInfo.InvariantCulture), xmlDocument);
+                settings.Write(sectionName, "Width", window.Width.ToString(CultureInfo.InvariantCulture), xmlDocument);
+                settings.Write(sectionName, "Height", window.Height.ToString(CultureInfo.InvariantCulture), xmlDocument);
             }
 
-            m_settings.SaveDocument(xmlDocument);
+            settings.SaveDocument(xmlDocument);
         }
     }
 
     public bool Changed { private get; set; }
 
-    private bool IsResizeable
-    {
-        get
-        {
-            return m_window.ResizeMode == ResizeMode.CanResizeWithGrip || m_window.ResizeMode == ResizeMode.CanResize;
-        }
-    }
+    private bool IsResizeable => window.ResizeMode is ResizeMode.CanResizeWithGrip or ResizeMode.CanResize;
 }

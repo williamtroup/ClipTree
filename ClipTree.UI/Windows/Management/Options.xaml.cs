@@ -48,13 +48,7 @@ public partial class Options : Window
         BackgroundAction.Run(() => m_windowPosition.Get());
     }
 
-    public static string GetName
-    {
-        get
-        {
-            return string.Format(Settings.WindowNameFormat, nameof(Options), Settings.Window);
-        }
-    }
+    public static string GetName => string.Format(Settings.WindowNameFormat, nameof(Options), Settings.Window);
 
     private void SetupDisplay()
     {

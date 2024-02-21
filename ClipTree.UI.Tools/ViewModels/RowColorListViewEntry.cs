@@ -16,15 +16,9 @@ public class RowColorListViewEntry
     public SolidColorBrush BackgroundColor { get; set; }
     public SolidColorBrush ForeColor { get; set; }
 
-    public string ColorHex
-    {
-        get { return Color.GetHex(); }
-    }
+    public string ColorHex => Color.GetHex();
 
-    public string TextColorHex
-    {
-        get { return TextColor.GetHex(); }
-    }
+    public string TextColorHex => TextColor.GetHex();
 
     public void ShowColors(bool showColors)
     {

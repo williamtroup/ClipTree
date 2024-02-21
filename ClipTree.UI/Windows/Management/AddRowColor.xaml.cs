@@ -30,13 +30,7 @@ public partial class AddRowColor : Window
         BackgroundAction.Run(() => m_windowPosition.Get());
     }
 
-    public static string GetName
-    {
-        get
-        {
-            return string.Format(Settings.WindowNameFormat, nameof(AddRowColor), Settings.Window);
-        }
-    }
+    public static string GetName => string.Format(Settings.WindowNameFormat, nameof(AddRowColor), Settings.Window);
 
     private void SetupDisplay()
     {

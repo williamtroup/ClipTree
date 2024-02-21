@@ -1003,11 +1003,5 @@ public partial class Main : Window
         messageInformation.ShowDialog();
     }
 
-    private ILog Log
-    {
-        get
-        {
-            return LogManager.GetLogger(GetType());
-        }
-    }
+    private ILog Log => LogManager.GetLogger(GetType());
 }

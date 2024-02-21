@@ -2,17 +2,7 @@
 
 namespace ClipTree.Engine.Clipboard.Events;
 
-public class ItemInsertedEventArgs : EventArgs
+public class ItemInsertedEventArgs(ClipboardHistoryItem item) : EventArgs
 {
-    private readonly ClipboardHistoryItem m_item;
-
-    public ItemInsertedEventArgs(ClipboardHistoryItem item)
-    {
-        m_item = item;
-    }
-
-    public ClipboardHistoryItem Item
-    {
-        get { return m_item; }
-    }
+    public ClipboardHistoryItem Item => item;
 }

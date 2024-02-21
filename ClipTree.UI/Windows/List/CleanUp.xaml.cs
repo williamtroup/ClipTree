@@ -29,13 +29,7 @@ public partial class CleanUp : Window
         BackgroundAction.Run(() => m_windowPosition.Get());
     }
 
-    public static string GetName
-    {
-        get
-        {
-            return string.Format(Settings.WindowNameFormat, nameof(CleanUp), Settings.Window);
-        }
-    }
+    public static string GetName => string.Format(Settings.WindowNameFormat, nameof(CleanUp), Settings.Window);
 
     private void SetupDisplay()
     {
