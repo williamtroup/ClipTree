@@ -39,32 +39,6 @@
                 <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
 
-            <tb:TaskbarIcon
-                IconSource="/Images/Main.ico"
-                MenuActivation="RightClick"
-                ToolTipText="ClipTree"
-                TrayMouseDoubleClick="NotifyTrayIcon_TrayMouseDoubleClick"
-                Visibility="Visible">
-
-                <tb:TaskbarIcon.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Click="ContextMenu_About_Click" Header="_About..." />
-                        <Separator />
-                        <MenuItem
-                            x:Name="mnuShowCurrentClip"
-                            Click="ContextMenu_ShowCurrentClip_Click"
-                            Header="Show Current _Clip..." />
-                        <Separator />
-                        <MenuItem
-                            Click="ContextMenu_Show_Click"
-                            FontWeight="Bold"
-                            Header="_Show" />
-                        <Separator />
-                        <MenuItem Click="ContextMenu_Exit_Click" Header="E_xit" />
-                    </ContextMenu>
-                </tb:TaskbarIcon.ContextMenu>
-            </tb:TaskbarIcon>
-
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />

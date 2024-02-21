@@ -315,8 +315,6 @@ namespace ClipTree
                     bSearch.IsEnabled = itemsInTheList;
                     bCleanUp.IsEnabled = itemsInTheList;
 
-                    mnuShowCurrentClip.IsEnabled = m_clipboardHistory.EngineRunning && m_clipboardHistory.Items.Count > 0;
-
                     UpdateTotalsItems();
                     UpdateKeyStateStatuses();
                     UpdateWindowForLoadingMode();

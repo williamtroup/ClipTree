@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/
+/ClipTree.Engine/.vs
+/ClipTree.Engine/bin/Debug
+/ClipTree.Engine/obj/Debug
+/ClipTree.UI/.vs
+/ClipTree.UI/bin/Debug
+/ClipTree.UI/obj/Debug
+/ClipTree.UI.Tools/.vs
+/ClipTree.UI.Tools/bin/Debug
+/ClipTree.UI.Tools/obj/Debug
