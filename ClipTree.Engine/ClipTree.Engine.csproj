@@ -10,12 +10,11 @@
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <AssemblyTitle>ClipTree.Engine</AssemblyTitle>
-    <Description>ClipTree is a small program to help you manage your clipboard history, enabling you to get back to something you thought you had lost.  A useful range of management tools is included to help you manage your lists as you go about your work.</Description>
     <Company>Bunoon</Company>
     <Product>ClipTree.Engine</Product>
     <Copyright>Copyright © 2024</Copyright>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>
