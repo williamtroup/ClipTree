@@ -7,7 +7,7 @@ ClipTree
 [![coded by William Troup](https://img.shields.io/badge/coded_by-William_Troup-yellow)](https://william-troup.com/)
 </h1>
 
-> <p align="center">A windows based clipboard manager for managing, and maintaining, a history of your clipboard actions.</p>
+> <p align="center">A windows based clipboard manager for controlling, and maintaining, the history of your clipboard actions.</p>
 > <p align="center">v1.0.0</p>
 <br />
 
