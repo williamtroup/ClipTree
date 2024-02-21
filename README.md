@@ -13,7 +13,7 @@ ClipTree
 
 ![ClipTree](docs/images/main.png)
 <br>
-<br>s
+<br>
 
 <h1>What features does ClipTree have?</h1>
 
