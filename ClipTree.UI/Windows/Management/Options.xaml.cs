@@ -237,7 +237,6 @@ namespace ClipTree.Windows.Management
             m_settings.RemoveSection(Report.Clip.GetName, xmlDocument);
             m_settings.RemoveSection(Report.Color.GetName, xmlDocument);
             m_settings.RemoveSection(Totals.GetName, xmlDocument);
-            m_settings.RemoveSection(Updates.GetName, xmlDocument);
 
             m_settings.SaveDocument(xmlDocument);
 
