@@ -295,15 +295,6 @@
                             <Image Source="Images/Buttons/BIN.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
                         </StackPanel>
                     </Button>
-
-                    <Button
-                        Click="AboutButton_Click"
-                        Style="{DynamicResource BaseWindowNavigationStatusButton}"
-                        ToolTip="About">
-                        <StackPanel>
-                            <Image Source="Images/Buttons/QUESTION.png" Style="{DynamicResource BaseWindowNavigationButtonImage}" />
-                        </StackPanel>
-                    </Button>
                 </StackPanel>
 
                 <StackPanel

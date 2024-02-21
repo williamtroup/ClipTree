@@ -413,36 +413,6 @@ namespace ClipTree
 
         #endregion
 
-        #region Private "Tray Icon" Helpers
-
-        private void ContextMenu_About_Click(object sender, RoutedEventArgs e)
-        {
-            AboutButton_Click(sender, null);
-        }
-
-        private void ContextMenu_ShowCurrentClip_Click(object sender, RoutedEventArgs e)
-        {
-            ViewCurrentClip(0);
-        }
-
-        private void ContextMenu_Show_Click(object sender, RoutedEventArgs e)
-        {
-            Show();
-            Activate();
-        }
-
-        private void ContextMenu_Exit_Click(object sender, RoutedEventArgs e)
-        {
-            ExitButton_Click(sender, null);
-        }
-
-        private void NotifyTrayIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
-        {
-            ContextMenu_Show_Click(sender, null);
-        }
-
-        #endregion
-
         #region Private "Title Context Menu" Events
 
         private void ContextMenu_DockToTheRight_OnClick(object sender, RoutedEventArgs e)
@@ -886,17 +856,6 @@ namespace ClipTree
             };
 
             cleanUp.ShowDialog();
-        }
-
-        private void AboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            About about = new About(m_settings)
-            {
-                Topmost = Topmost,
-                Owner = this
-            };
-
-            about.ShowDialog();
         }
 
         #endregion

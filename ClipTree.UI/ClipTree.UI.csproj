@@ -167,9 +167,6 @@
     <Compile Include="Windows\Report\Updates.xaml.cs">
       <DependentUpon>Updates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Report\About.xaml.cs">
-      <DependentUpon>About.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Resources\Dialog.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -267,10 +264,6 @@
     <Page Include="Windows\Report\Updates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Report\About.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Main.xaml">
       <Generator>MSBuild:Compile</Generator>
